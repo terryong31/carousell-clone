@@ -18,5 +18,11 @@ export const useAuth = () => {
         })
         return result
     }
-    return { signIn, signUp }
+
+    const signOut = async () => {
+        const { error } = await supabase.auth.signOut()
+        return { error }
+    }
+
+    return { signIn, signUp, signOut }
 }

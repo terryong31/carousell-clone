@@ -10,6 +10,8 @@ const state = reactive<Partial<LoginSchema>>({
   password: undefined
 })
 
+const isLoginOpen = ref(false)
+
 const loading = ref(false)
 
 async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
@@ -33,8 +35,6 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
     }
   }
 }
-
-const isLoginOpen = ref(false)
 
 </script>
 
@@ -81,6 +81,8 @@ const isLoginOpen = ref(false)
             class="w-full"
           />
         </UFormField>
+
+        <AuthRecover />
       </UForm>
     </template>
 

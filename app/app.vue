@@ -35,6 +35,8 @@ async function sellItem() {
   router.push('/sell')
 }
 
+const isLogoutOpen = ref(false)
+
 const userItems = computed(() => [
   {
     label: 'Hello, ' + user.value?.email?.split('@')[0] || 'Account',
@@ -43,12 +45,12 @@ const userItems = computed(() => [
       {
         label: 'Profile',
         icon: 'i-lucide-user',
-        to: '/profile'
+        to: '/u/' + user.value?.email?.split('@')[0]
       },
       {
         label: 'Log out',
         icon: 'i-lucide-log-out',
-        // click: () => handleLogout()
+        onSelect: () => isLogoutOpen.value = true
       }
     ]
   }
@@ -184,5 +186,6 @@ const userItems = computed(() => [
         />
       </template>
     </UFooter>
+    <AuthLogout v-model:open="isLogoutOpen" />
   </UApp>
 </template>
