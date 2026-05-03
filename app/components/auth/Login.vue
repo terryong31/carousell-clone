@@ -20,7 +20,7 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
     try {
       const { data, error } = await signIn(state.email, state.password)
       if (error) {
-        toast.add({ title: 'Login Failed', description: '' + error, color: 'error' })
+        toast.add({ title: 'Login Failed', description: 'Invalid login credentials', color: 'error' })
         return
       } else {
         toast.add({ title: 'Login Successful', description: 'Welcome back! ' + data.user.email, color: 'success' })

@@ -39,8 +39,13 @@ const isLogoutOpen = ref(false)
 
 const userItems = computed(() => [
   {
-    label: 'Hello, ' + user.value?.email?.split('@')[0] || 'Account',
+    label: 'Hello, ' + user.value?.user_metadata?.display_name || 'Account',
     icon: 'i-lucide-user',
+    ui: {
+      linkLabel: 'hidden sm:block', 
+      linkTrailing: 'hidden sm:block'
+    },
+    slot: 'account',
     children: [
       {
         label: 'Profile',
@@ -48,7 +53,7 @@ const userItems = computed(() => [
         to: '/u/' + user.value?.email?.split('@')[0]
       },
       {
-        label: 'Log out',
+        label: 'Sign Out',
         icon: 'i-lucide-log-out',
         onSelect: () => isLogoutOpen.value = true
       }
@@ -101,9 +106,15 @@ const userItems = computed(() => [
             <UNavigationMenu
               :items="userItems"
               :ui="{
+                viewport: 'min-w-48',
+                content: 'w-48',
                 childList: 'flex flex-col gap-1'
               }"
-            />
+            >
+              <template #account-label="{ item }">
+                <span class="hidden sm:inline">{{ item.label }}</span>
+              </template>
+            </UNavigationMenu>
           </div>
           <div v-else>
             <AuthRegister />

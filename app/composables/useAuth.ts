@@ -8,12 +8,15 @@ export const useAuth = () => {
     return result
   }
 
-  const signUp = async (userEmail: string, userPassword: string) => {
+  const signUp = async (userEmail: string, userPassword: string, userDisplayName: string) => {
     const result = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
       options: {
-        emailRedirectTo: 'http://localhost:3000/confirm'
+        emailRedirectTo: 'http://localhost:3000/confirm',
+        data: {
+          display_name: userDisplayName
+        }
       }
     })
     return result
@@ -32,5 +35,12 @@ export const useAuth = () => {
     return result
   }
 
-  return { signIn, signUp, signOut, sendResetPasswordLink }
+  const resetPassword = async (userPassword: string) => {
+    const result = await supabase.auth.updateUser({
+      password: userPassword
+    })
+    return result
+  }
+
+  return { signIn, signUp, signOut, sendResetPasswordLink, resetPassword }
 }

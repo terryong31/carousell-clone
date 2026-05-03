@@ -13,10 +13,10 @@ const state = reactive<Partial<RegisterSchema>>({
 const loading = ref(false)
 
 async function onRegisterSubmit(_event: FormSubmitEvent<RegisterSchema>) {
-  if (state.email && state.password) {
+  if (state.email && state.password && state.name) {
     loading.value = true
     try {
-      const { data, error } = await signUp(state.email, state.password)
+      const { data, error } = await signUp(state.email, state.password, state.name)
       if (error) {
         toast.add({ title: 'Register Failed', description: '' + error, color: 'error' })
         return
@@ -57,6 +57,17 @@ const isRegisterOpen = ref(false)
         class="space-y-4"
         @submit="onRegisterSubmit"
       >
+
+        <UFormField
+          label="Display Name"
+          name="name"
+        >
+          <UInput
+            v-model="state.name"
+            class="w-full"
+          />
+        </UFormField>
+
         <UFormField
           label="Email"
           name="email"

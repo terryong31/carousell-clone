@@ -19,6 +19,7 @@ watchEffect(() => {
   <UModal
     :dismissible="false"
     :open="true"
+    :ui="{ overlay: 'bg-default' }"
   >
     <template #content>
       <div
