@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { categories } from '~/constants/categories'
 
+definePageMeta({ 
+  showSearch: true
+})
+
 const images = import.meta.glob('~/assets/ads/*.{png,jpg,jpeg,webp}', { eager: true })
 const carouselItems = (Object.values(images) as { default: string }[]).map(img => img.default)
 
