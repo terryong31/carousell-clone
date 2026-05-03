@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { categories } from '~/constants/categories'
 
-const carouselItems = [
-  'https://picsum.photos/640/640?random=1',
-  'https://picsum.photos/640/640?random=2',
-  'https://picsum.photos/640/640?random=3',
-  'https://picsum.photos/640/640?random=4',
-  'https://picsum.photos/640/640?random=5',
-  'https://picsum.photos/640/640?random=6'
-]
+const images = import.meta.glob('~/assets/ads/*.{png,jpg,jpeg,webp}', { eager: true })
+const carouselItems = (Object.values(images) as { default: string }[]).map(img => img.default)
 
 // Flatten the categories to show all sub-categories in the carousel
 const carouselCategoryList = categories.flatMap(cat => cat.children || [])

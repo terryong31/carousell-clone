@@ -18,24 +18,20 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
   if (state.email && state.password) {
     loading.value = true
     try {
-        const { data, error } = await signIn(state.email, state.password)
-        if (error) {
-          toast.add({ title: 'Login Failed', description: '' + error, color: 'error' })
-          return 
-        }
-        else {
-          toast.add({ title: 'Login Successful', description: 'Welcome back! ' + data.user.email , color: 'success' })
-          isLoginOpen.value = false
-          console.log(data)
-          return
-        }
+      const { data, error } = await signIn(state.email, state.password)
+      if (error) {
+        toast.add({ title: 'Login Failed', description: '' + error, color: 'error' })
+        return
+      } else {
+        toast.add({ title: 'Login Successful', description: 'Welcome back! ' + data.user.email, color: 'success' })
+        isLoginOpen.value = false
+        return
       }
-    finally {
+    } finally {
       loading.value = false
     }
   }
 }
-
 </script>
 
 <template>
@@ -82,7 +78,12 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
           />
         </UFormField>
 
-        <AuthRecover />
+        <ULink
+          as="button"
+          to="/forgot-password"
+          @click="isLoginOpen = false"
+          active-class="text-default"
+        >Forgot password?</ULink>
       </UForm>
     </template>
 

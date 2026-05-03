@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <UContainer>
-        Sell something here!
-    </UContainer>
+  <UContainer>
+    Sell something here!
+  </UContainer>
 </template>

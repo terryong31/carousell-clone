@@ -16,26 +16,23 @@ async function onRegisterSubmit(_event: FormSubmitEvent<RegisterSchema>) {
   if (state.email && state.password) {
     loading.value = true
     try {
-        const { data, error } = await signUp(state.email, state.password)
-        if (error) {
-          toast.add({ title: 'Register Failed', description: '' + error, color: 'error' })
-          return 
-        }
-        else {
-          toast.add({ title: 'Register Successful', description: 'Your account has been registered successfully. Check your email to confirm it.' , color: 'success' })
-          isRegisterOpen.value = false
-          console.log(data)
-          return
-        }
+      const { data, error } = await signUp(state.email, state.password)
+      if (error) {
+        toast.add({ title: 'Register Failed', description: '' + error, color: 'error' })
+        return
+      } else {
+        toast.add({ title: 'Register Successful', description: 'Your account has been registered successfully. Check your email to confirm it.', color: 'success' })
+        isRegisterOpen.value = false
+        console.log(data)
+        return
       }
-    finally {
+    } finally {
       loading.value = false
     }
   }
 }
 
 const isRegisterOpen = ref(false)
-
 </script>
 
 <template>

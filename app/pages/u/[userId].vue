@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <UContainer>
-        Test
-    </UContainer>
+  <UContainer>
+    Test
+  </UContainer>
 </template>

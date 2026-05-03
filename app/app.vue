@@ -55,7 +55,6 @@ const userItems = computed(() => [
     ]
   }
 ])
-
 </script>
 
 <template>
@@ -99,11 +98,11 @@ const userItems = computed(() => [
       <template #right>
         <div class="flex items-center gap-1">
           <div v-if="user">
-            <UNavigationMenu 
-            :items="userItems"           
-            :ui="{
-              childList: 'flex flex-col gap-1'
-            }" 
+            <UNavigationMenu
+              :items="userItems"
+              :ui="{
+                childList: 'flex flex-col gap-1'
+              }"
             />
           </div>
           <div v-else>
@@ -113,8 +112,8 @@ const userItems = computed(() => [
           <UButton
             loading-auto
             loading-icon="i-lucide-loader"
-            @click="sellItem"
             label="Sell"
+            @click="sellItem"
           />
         </div>
       </template>
@@ -154,7 +153,10 @@ const userItems = computed(() => [
       </UContainer>
     </UMain>
 
-    <USeparator type="solid" class="h-px" />
+    <USeparator
+      type="solid"
+      class="h-px"
+    />
 
     <UFooter>
       <template #top>
