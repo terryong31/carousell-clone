@@ -60,9 +60,39 @@ const userItems = computed(() => [
   }
 ])
 
+const acknowledged = useCookie('disclaimer-acknowledged', { default: () => false })
+
+const disclaimerModal = ref(!acknowledged.value)
+
 </script>
 
 <template>
+  <!-- Disclaimer Modal -->
+  <UModal 
+    v-model:open="disclaimerModal"
+    :dismissible="false"
+    title="Disclaimer" 
+    close-icon="i-lucide-x">
+      <template #body>
+        <div>
+          <p>By using this site, I acknowledge that this website is not official Carousell's website but a clone made by Terry Ong to showcase his web development skills for portfolio purposes</p>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex items-center justify-end gap-4">
+          <UButton label="I acknowledge" 
+            @click="
+              disclaimerModal = false,
+              acknowledged = true"
+            />
+          <ULink to="https://carousell.com">Go to Carousell Website</ULink>
+        </div>
+      </template>
+  </UModal>
+
+  <!-- Main Content Here Below -->
+
+  <UBanner id="disclaimer" icon="i-lucide-circle-alert" title="WARNING! THIS IS NOT CAROUSELL'S OFFICIAL WEBSITE, ITS A CLONE FOR DEVELOPER PORTFOLIO PURPOSES! CREATED BY TERRY ONG" close />
   <UHeader
     toggle-side="left"
     :ui="{ root: 'h-auto', container: 'h-(--ui-header-height)' }"
