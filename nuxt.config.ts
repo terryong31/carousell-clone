@@ -4,7 +4,8 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@nuxtjs/supabase',
-    '@vercel/analytics'
+    '@vercel/analytics',
+    '@vercel/speed-insights'
     // '@nuxt/content'
   ],
 
