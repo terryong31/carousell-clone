@@ -42,10 +42,9 @@ const distance: Array<Array<DropdownMenuItem>> = [
     {
       label: '500km',
       value: 500
-    },
+    }
   ]
 ]
-
 </script>
 
 <template>
@@ -61,10 +60,17 @@ const distance: Array<Array<DropdownMenuItem>> = [
       </div>
       <div class="flex items-center">
         <div class="bg-neutral-100 dark:bg-neutral-800 p-1">
-          <UInput icon="i-lucide-map-pin" variant="ghost" placeholder="Malaysia" />
+          <UInput
+            icon="i-lucide-map-pin"
+            variant="ghost"
+            placeholder="Malaysia"
+          />
         </div>
         <div class="bg-neutral-100 dark:bg-neutral-800 p-1">
-          <UDropdownMenu :items="distance" :ui="{ content: 'w-(--reka-dropdown-menu-trigger-width)' }">
+          <UDropdownMenu
+            :items="distance"
+            :ui="{ content: 'w-(--reka-dropdown-menu-trigger-width)' }"
+          >
             <UButton
               label="+km"
               class="w-full"
@@ -77,7 +83,11 @@ const distance: Array<Array<DropdownMenuItem>> = [
         </div>
       </div>
       <div class="bg-neutral-100 dark:bg-neutral-800 p-1">
-        <UButton color="success" label="Search" class="font-bold text-white" />
+        <UButton
+          color="success"
+          label="Search"
+          class="font-bold text-white"
+        />
       </div>
     </div>
   </UContainer>

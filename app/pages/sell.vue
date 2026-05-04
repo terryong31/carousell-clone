@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 definePageMeta({
   showSell: true
 })
@@ -7,7 +6,6 @@ definePageMeta({
 const images = ref<File[]>([])
 
 const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
-
 </script>
 
 <template>
@@ -45,7 +43,11 @@ const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
     <div class="flex-2 rounded-md border border-default p-6">
       <UForm>
         <UFormField>
-          <USelectMenu placeholder="Select a Category" :items="items" class="w-full" />
+          <USelectMenu
+            placeholder="Select a Category"
+            :items="items"
+            class="w-full"
+          />
         </UFormField>
       </UForm>
     </div>

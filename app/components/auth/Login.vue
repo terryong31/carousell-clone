@@ -81,8 +81,8 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
         <ULink
           as="button"
           to="/forgot-password"
-          @click="isLoginOpen = false"
           active-class="text-default"
+          @click="isLoginOpen = false"
         >Forgot password?</ULink>
       </UForm>
     </template>

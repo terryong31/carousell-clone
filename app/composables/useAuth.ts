@@ -30,7 +30,7 @@ export const useAuth = () => {
   const sendResetPasswordLink = async (userEmail: string) => {
     const result = await supabase.auth.resetPasswordForEmail(
       userEmail,
-      { redirectTo: 'http://localhost:3000/reset-password', }
+      { redirectTo: 'http://localhost:3000/reset-password' }
     )
     return result
   }

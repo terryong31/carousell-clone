@@ -3,8 +3,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@nuxtjs/supabase',
-    '@nuxt/content'
+    '@nuxtjs/supabase'
+    // '@nuxt/content'
   ],
 
   $development: {
@@ -36,13 +36,6 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  runtimeConfig: {
-    public: {
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY
-    }
-  },
-
   routeRules: {
     '/': { prerender: true }
   },
@@ -50,6 +43,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-15',
 
   vite: {
+    build: {
+      sourcemap: false
+    },
     optimizeDeps: {
       include: [
         '@vue/devtools-core',

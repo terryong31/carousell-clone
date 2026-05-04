@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { categories } from '~/constants/categories'
 
-definePageMeta({ 
+definePageMeta({
   showSearch: true
 })
 
