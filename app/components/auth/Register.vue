@@ -44,7 +44,6 @@ const isRegisterOpen = ref(false)
     @click="isRegisterOpen = true"
   />
 
-
   <UModal
     v-model:open="isRegisterOpen"
     title="Sign Up"
@@ -58,7 +57,6 @@ const isRegisterOpen = ref(false)
         class="space-y-4"
         @submit="onRegisterSubmit"
       >
-
         <UFormField
           label="Display Name"
           name="name"

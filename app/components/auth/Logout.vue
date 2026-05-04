@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const { signOut } = useAuth()
 
 const toast = useToast()
@@ -20,7 +19,6 @@ const handleLogout = async () => {
     navigateTo('/')
   }
 }
-
 </script>
 
 <template>
@@ -31,8 +29,18 @@ const handleLogout = async () => {
   >
     <template #footer>
       <div class="flex gap-2">
-        <UButton color="neutral" label="Dismiss" @click="isLogoutOpen = false" />
-        <UButton color="error" label="Sign Out" loading-auto @click="handleLogout" :loading="loading"/>
+        <UButton
+          color="neutral"
+          label="Dismiss"
+          @click="isLogoutOpen = false"
+        />
+        <UButton
+          color="error"
+          label="Sign Out"
+          loading-auto
+          :loading="loading"
+          @click="handleLogout"
+        />
       </div>
     </template>
   </UModal>
