@@ -37,12 +37,13 @@ const isRegisterOpen = ref(false)
 
 <template>
   <UButton
+    label="Register"
     color="neutral"
+    class="font-bold"
     variant="ghost"
     @click="isRegisterOpen = true"
-  >
-    Register
-  </UButton>
+  />
+
 
   <UModal
     v-model:open="isRegisterOpen"

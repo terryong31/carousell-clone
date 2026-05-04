@@ -72,7 +72,7 @@ const userItems = computed(() => [
         to="/"
         class="shrink-0"
       >
-        <AppLogo class="h-7 pr-4" />
+        <AppLogo class="h-7 md:h-8 pr-4" />
       </NuxtLink>
 
       <UNavigationMenu
@@ -151,7 +151,7 @@ const userItems = computed(() => [
           loading-auto
           loading-icon="i-lucide-loader"
           label="Sell"
-          class="font-bold"
+          class="font-bold text-white"
           @click="sellItem"
         />
       </div>

@@ -23,8 +23,8 @@ const products = Array.from({ length: 8 }, (_, i) => ({
 </script>
 
 <template>
-  <div class="py-10 space-y-8">
-    <div class="md:mx-16 mx-12">
+  <div class="py-4 space-y-10">
+    <div>
       <UCarousel
         v-slot="{ item }"
         :align="'start'"
@@ -32,17 +32,19 @@ const products = Array.from({ length: 8 }, (_, i) => ({
         :items="carouselItems"
         loop
         wheel-gestures
+        prev-icon="i-lucide-chevron-left"
+        next-icon="i-lucide-chevron-right"
         :ui="{
           item: 'md:basis-1/2',
-          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 md:-mx-4 -mx-16',
-          prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/90 shadow-lg text-neutral-900 dark:text-white p-2',
-          next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/90 shadow-lg text-neutral-900 dark:text-white p-2'
+          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 mx-7',
+          prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/80 shadow-lg text-neutral-900 dark:text-white p-2',
+          next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/80 shadow-lg text-neutral-900 dark:text-white p-2'
         }"
         class="w-full"
       >
         <img
           :src="item"
-          class="rounded-xl w-full aspect-[21/11] object-cover border border-neutral-200 dark:border-neutral-800 shadow-sm"
+          class="rounded-lg aspect-[60/24.5] object-cover border border-neutral-200 dark:border-neutral-800 shadow-sm"
           loading="lazy"
         >
       </UCarousel>
@@ -51,10 +53,12 @@ const products = Array.from({ length: 8 }, (_, i) => ({
     <h1 class="font-black text-2xl">
       Explore Carousell
     </h1>
-    <div class="md:mx-12 mx-10">
+    <div>
       <UCarousel
         v-slot="{ item }"
         arrows
+        prev-icon="i-lucide-chevron-left"
+        next-icon="i-lucide-chevron-right"
         :slides-to-scroll="3"
         :breakpoints="{
           '(min-width: 768px)': {
@@ -64,19 +68,21 @@ const products = Array.from({ length: 8 }, (_, i) => ({
         :items="carouselCategoryList"
         :ui="{
           item: 'md:basis-1/10 basis-1/3',
-          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 md:mx-0 -mx-14',
-          prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/90 shadow-md text-neutral-900 dark:text-white p-2',
-          next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/90 shadow-md text-neutral-900 dark:text-white p-2'
+          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 mx-7',
+          prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-gray-900/90 shadow-md text-neutral-900 dark:text-white p-2',
+          next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-gray-900/90 shadow-md text-neutral-900 dark:text-white p-2'
         }"
       >
         <NuxtLink
           :to="item.to"
           class="flex flex-col items-center gap-3 group transition-all active:scale-95"
         >
-          <div class="size-16 rounded-full flex items-center justify-center group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 transition-colors">
-            <UIcon
-              :name="item.icon"
-              class="size-8 text-neutral-700 dark:text-neutral-300 group-hover:text-primary transition-colors"
+          <div class="size-22 rounded-full flex items-center justify-center group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 transition-colors">
+            <UAvatar
+              :src="item.avatar?.src"
+              :icon="item.icon"
+              size="2xl"
+              class="bg-transparent size-20 text-neutral-700 dark:text-neutral-300 group-hover:text-primary transition-colors"
             />
           </div>
           <span class="text-xs font-medium text-center line-clamp-2 max-w-[80px] text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white">
@@ -124,7 +130,7 @@ const products = Array.from({ length: 8 }, (_, i) => ({
 
           <template #footer>
             <p>{{ product.name }}</p>
-            <p class="text-primary font-bold text-lg">{{ product.price }}</p>
+            <p class="font-bold text-lg">{{ product.price }}</p>
             <p>{{ product.condition }}</p>
             <div class="pt-3 flex items-center gap-1">
               <UIcon

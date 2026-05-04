@@ -36,12 +36,12 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
 
 <template>
   <UButton
+    label="Login"
+    class="text-white font-bold"
     color="neutral"
     variant="ghost"
     @click="isLoginOpen = true"
-  >
-    Login
-  </UButton>
+  />
 
   <UModal
     v-model:open="isLoginOpen"

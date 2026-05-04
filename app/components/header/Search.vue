@@ -77,7 +77,7 @@ const distance: Array<Array<DropdownMenuItem>> = [
         </div>
       </div>
       <div class="bg-neutral-100 dark:bg-neutral-800 p-1">
-        <UButton color="success" label="Search" class="font-bold" />
+        <UButton color="success" label="Search" class="font-bold text-white" />
       </div>
     </div>
   </UContainer>
