@@ -1,9 +1,24 @@
 <script setup lang="ts">
 const router = useRouter()
 
+const route = useRoute()
+
+const toast = useToast()
+
 const user = useSupabaseUser()
 
 const status = ref('loading')
+
+onMounted(() => {
+  if (route.query.error) {
+    toast.add({
+      title: 'Access Denied',
+      description: route.query.error_description as string,
+      color: 'error'
+    })
+    router.push('/')
+  }
+})
 
 watchEffect(() => {
   if (user.value) {

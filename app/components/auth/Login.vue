@@ -5,12 +5,14 @@ const { signIn } = useAuth()
 
 const toast = useToast()
 
+const isLoginOpen = useState('auth-login-modal', () => false)
+
+const isRegisterOpen = useState('auth-register-modal', () => false)
+
 const state = reactive<Partial<LoginSchema>>({
   email: undefined,
   password: undefined
 })
-
-const isLoginOpen = ref(false)
 
 const loading = ref(false)
 
@@ -37,7 +39,7 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
 <template>
   <UButton
     label="Login"
-    class="text-white font-bold"
+    class="font-bold"
     color="neutral"
     variant="ghost"
     @click="isLoginOpen = true"
@@ -45,10 +47,15 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
 
   <UModal
     v-model:open="isLoginOpen"
-    title="Login"
     :ui="{ content: 'sm:max-w-sm' }"
   >
+    <template #title>
+      <AppLogo class="h-7" />
+    </template>
     <template #body>
+      <div class="w-full text-center pb-4 text-xl font-bold">
+        Login
+      </div>
       <UForm
         id="login-form"
         :schema="loginSchema"
@@ -78,27 +85,36 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
           />
         </UFormField>
 
-        <ULink
-          as="button"
-          to="/forgot-password"
-          active-class="text-default"
-          @click="isLoginOpen = false"
-        >Forgot password?</ULink>
+        <div>
+          <ULink
+            as="button"
+            to="/forgot-password"
+            active-class="text-default"
+            class="font-semibold"
+            @click="isLoginOpen = false"
+          >Forgot password?</ULink>
+        </div>
+
+        <UButton
+          :loading="loading"
+          type="submit"
+          label="Log in"
+          form="login-form"
+          class="w-full justify-center"
+        />
       </UForm>
     </template>
 
     <template #footer>
-      <UButton
-        :loading="loading"
-        type="submit"
-        label="Submit"
-        form="login-form"
-      />
-      <UButton
-        color="neutral"
-        label="Dismiss"
-        @click="isLoginOpen = false"
-      />
+      <div class="w-full items-center text-center justify-center">
+        Don't have an account yet?
+        <ULink
+          class="text-primary"
+          @click="isLoginOpen = false, isRegisterOpen = true"
+        >
+          Create account
+        </ULink>
+      </div>
     </template>
   </UModal>
 </template>

@@ -1,4 +1,5 @@
 export const useAuth = () => {
+  const config = useRuntimeConfig()
   const supabase = useSupabaseClient()
   const signIn = async (userEmail: string, userPassword: string) => {
     const result = await supabase.auth.signInWithPassword({
@@ -13,7 +14,7 @@ export const useAuth = () => {
       email: userEmail,
       password: userPassword,
       options: {
-        emailRedirectTo: 'http://localhost:3000/confirm',
+        emailRedirectTo: `${config.public.siteUrl}/confirm`,
         data: {
           display_name: userDisplayName
         }
@@ -30,7 +31,7 @@ export const useAuth = () => {
   const sendResetPasswordLink = async (userEmail: string) => {
     const result = await supabase.auth.resetPasswordForEmail(
       userEmail,
-      { redirectTo: 'http://localhost:3000/reset-password' }
+      { redirectTo: `${config.public.siteUrl}/reset-password` }
     )
     return result
   }

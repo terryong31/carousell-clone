@@ -36,7 +36,7 @@ const products = Array.from({ length: 8 }, (_, i) => ({
         next-icon="i-lucide-chevron-right"
         :ui="{
           item: 'md:basis-1/2',
-          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 mx-7',
+          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 -mx-4 sm:mx-7 md:mx-7 lg:mx-7',
           prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/80 shadow-lg text-neutral-900 dark:text-white p-2',
           next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-neutral-900/80 shadow-lg text-neutral-900 dark:text-white p-2'
         }"
@@ -61,14 +61,17 @@ const products = Array.from({ length: 8 }, (_, i) => ({
         next-icon="i-lucide-chevron-right"
         :slides-to-scroll="3"
         :breakpoints="{
+          '(min-width: 640px)': {
+            slidesToScroll: 6
+          },
           '(min-width: 768px)': {
-            slidesToScroll: 10
+            slidesToScroll: 9
           }
         }"
         :items="carouselCategoryList"
         :ui="{
-          item: 'md:basis-1/10 basis-1/3',
-          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 mx-7',
+          item: 'md:basis-1/9 sm:basis-1/6 basis-1/3',
+          arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 -mx-4 sm:mx-7 md:mx-7 lg:mx-7',
           prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-gray-900/90 shadow-md text-neutral-900 dark:text-white p-2',
           next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-gray-900/90 shadow-md text-neutral-900 dark:text-white p-2'
         }"

@@ -3,7 +3,9 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
-    '@nuxtjs/supabase'
+    '@nuxtjs/supabase',
+    '@vercel/analytics',
+    '@vercel/speed-insights'
     // '@nuxt/content'
   ],
 
