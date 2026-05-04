@@ -58,7 +58,7 @@ const distance: Array<Array<DropdownMenuItem>> = [
           class="w-full"
         />
       </div>
-      <div class="flex items-center">
+      <div class="hidden md:flex items-center">
         <div class="bg-neutral-100 dark:bg-neutral-800 p-1">
           <UInput
             icon="i-lucide-map-pin"
@@ -82,7 +82,7 @@ const distance: Array<Array<DropdownMenuItem>> = [
           </UDropdownMenu>
         </div>
       </div>
-      <div class="bg-neutral-100 dark:bg-neutral-800 p-1">
+      <div class="hidden md:block bg-neutral-100 dark:bg-neutral-800 p-1">
         <UButton
           color="success"
           label="Search"
