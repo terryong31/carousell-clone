@@ -50,10 +50,12 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
     :ui="{ content: 'sm:max-w-sm' }"
   >
     <template #title>
-      <AppLogo class="h-7"/>
+      <AppLogo class="h-7" />
     </template>
     <template #body>
-      <div class="w-full text-center pb-4 text-xl font-bold">Login</div>
+      <div class="w-full text-center pb-4 text-xl font-bold">
+        Login
+      </div>
       <UForm
         id="login-form"
         :schema="loginSchema"
@@ -88,8 +90,8 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
             as="button"
             to="/forgot-password"
             active-class="text-default"
-            @click="isLoginOpen = false"
             class="font-semibold"
+            @click="isLoginOpen = false"
           >Forgot password?</ULink>
         </div>
 
@@ -104,10 +106,12 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
     </template>
 
     <template #footer>
-      <div class="w-full items-center text-center justify-center">Don't have an account yet? 
-        <ULink 
-          @click="isLoginOpen = false, isRegisterOpen = true" 
-          class="text-primary">
+      <div class="w-full items-center text-center justify-center">
+        Don't have an account yet?
+        <ULink
+          class="text-primary"
+          @click="isLoginOpen = false, isRegisterOpen = true"
+        >
           Create account
         </ULink>
       </div>

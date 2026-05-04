@@ -58,11 +58,13 @@ const props = withDefaults(defineProps<{
     :ui="{ content: 'sm:max-w-sm' }"
   >
     <template #title>
-      <AppLogo class="h-7"/>
+      <AppLogo class="h-7" />
     </template>
 
     <template #body>
-      <div class="w-full text-center pb-4 text-xl font-bold">Create acoount</div>
+      <div class="w-full text-center pb-4 text-xl font-bold">
+        Create acoount
+      </div>
 
       <UForm
         id="register-form"
@@ -102,7 +104,9 @@ const props = withDefaults(defineProps<{
             class="w-full"
           />
         </UFormField>
-        <div class="text-sm text-justify">To ensure a safe community, Carousellers have to verify their email. A verification email will be sent to your inbox.</div>
+        <div class="text-sm text-justify">
+          To ensure a safe community, Carousellers have to verify their email. A verification email will be sent to your inbox.
+        </div>
         <div>
           <UButton
             :loading="loading"
@@ -116,10 +120,12 @@ const props = withDefaults(defineProps<{
     </template>
 
     <template #footer>
-      <div class="w-full items-center text-center justify-center">Already have an account?
-        <ULink 
-          @click="isRegisterOpen = false, isLoginOpen = true" 
-          class="text-primary">
+      <div class="w-full items-center text-center justify-center">
+        Already have an account?
+        <ULink
+          class="text-primary"
+          @click="isRegisterOpen = false, isLoginOpen = true"
+        >
           Login
         </ULink>
       </div>

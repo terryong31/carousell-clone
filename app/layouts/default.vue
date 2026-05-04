@@ -75,7 +75,12 @@ const disclaimerModal = ref(!acknowledged.value)
     >
       <template #body>
         <div>
-          <p>By using this site, I acknowledge that this website is not official Carousell's website but a clone made by <ULink target="_blank" to="https://github.com/terryong31">Terry Ong</ULink> to showcase his web development skills for portfolio purposes</p>
+          <p>
+            By using this site, I acknowledge that this website is not official Carousell's website but a clone made by <ULink
+              target="_blank"
+              to="https://github.com/terryong31"
+            >Terry Ong</ULink> to showcase his web development skills for portfolio purposes
+          </p>
         </div>
       </template>
       <template #footer>
@@ -86,7 +91,10 @@ const disclaimerModal = ref(!acknowledged.value)
               disclaimerModal = false,
               acknowledged = true"
           />
-          <ULink to="https://carousell.com" class="text-sm">Go to Carousell Website</ULink>
+          <ULink
+            to="https://carousell.com"
+            class="text-sm"
+          >Go to Carousell Website</ULink>
         </div>
       </template>
     </UModal>
