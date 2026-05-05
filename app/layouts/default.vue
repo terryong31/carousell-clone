@@ -7,15 +7,13 @@ import { categories } from '~/constants/categories'
 
 const router = useRouter()
 
-const route = useRoute()
-
 const user = useSupabaseUser()
+
+const route = useRoute()
 
 const locale = ref('en')
 
 const headerItems = categories
-
-const isDrawerOpen = ref(false)
 
 const footerDefaultItems = computed<Array<NavigationMenuItem>>(() => [
   {
@@ -33,31 +31,6 @@ const footerDefaultItems = computed<Array<NavigationMenuItem>>(() => [
 async function sellItem() {
   router.push('/sell')
 }
-
-const isLogoutOpen = ref(false)
-
-const userItems = computed(() => [
-  {
-    label: 'Hello, ' + user.value?.user_metadata?.display_name || 'Account',
-    ui: {
-      linkLabel: 'hidden sm:block',
-      linkTrailing: 'hidden sm:block'
-    },
-    slot: 'account',
-    children: [
-      {
-        label: 'Profile',
-        icon: 'i-lucide-user',
-        to: '/u/' + user.value?.email?.split('@')[0]
-      },
-      {
-        label: 'Sign Out',
-        icon: 'i-lucide-log-out',
-        onSelect: () => isLogoutOpen.value = true
-      }
-    ]
-  }
-])
 
 const acknowledged = useCookie('disclaimer-acknowledged', { default: () => false })
 
@@ -108,7 +81,7 @@ const disclaimerModal = ref(!acknowledged.value)
       close
     />
     <UHeader
-      toggle-side="left"
+      :toggle="false"
       :ui="{ root: 'h-auto', container: 'h-(--ui-header-height)' }"
     >
       <template #left>
@@ -122,7 +95,7 @@ const disclaimerModal = ref(!acknowledged.value)
         <UNavigationMenu
           :items="headerItems"
           content-orientation="vertical"
-          class="hidden lg:flex justify-center"
+          class="hidden xl:flex justify-center"
           :ui="{
             linkLeadingIcon: 'hidden',
             linkTrailingIcon: 'hidden',
@@ -132,33 +105,9 @@ const disclaimerModal = ref(!acknowledged.value)
             childLinkIcon: 'hidden'
           }"
         />
-        <div class="relative z-10 hidden xl:block">
-          <UDrawer
-            direction="right"
-            :handle="false"
-          >
-            <UButton
-              label="All Categories"
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-layout-grid"
-            />
-            <template #header>
-              <div class="flex items-center justify-between gap-4 mb-4">
-                <h2>All Categories</h2>
 
-                <UButton
-                  color="neutral"
-                  variant="ghost"
-                  icon="i-lucide-x"
-                  @click="isDrawerOpen = false"
-                />
-              </div>
-            </template>
-            <template #body>
-              blablabla
-            </template>
-          </UDrawer>
+        <div >
+          <HeaderCategories class="hidden md:block" :show-label="true" />
         </div>
       </template>
 
@@ -178,25 +127,14 @@ const disclaimerModal = ref(!acknowledged.value)
             v-if="user"
             class="flex items-center gap-1"
           >
-            <UNavigationMenu
-              :items="userItems"
-              :ui="{
-                viewport: 'min-w-48',
-                content: 'w-48',
-                childList: 'flex flex-col gap-1'
-              }"
-            >
-              <template #account-label>
-                <div class="flex items-center gap-2">
-                  <UAvatar
-                    :src="user?.user_metadata?.avatar_url"
-                    :alt="user?.user_metadata?.display_name"
-                    size="sm"
-                  />
-                  <span class="hidden sm:inline">Hello, <span class="font-bold">{{ user?.user_metadata?.display_name || 'Account' }}</span></span>
-                </div>
-              </template>
-            </UNavigationMenu>
+            <HeaderCategories :show-label="false" class="md:hidden" />
+            <HeaderProfile 
+              class="hidden lg:block"
+              :showDetails="true"
+              :userDisplayName="user.user_metadata?.display_name"
+              :username="user.email?.split('@')[0]"
+              :userProfilePic="user?.user_metadata?.avatar_url"
+            />
             <UButton
               icon="i-lucide-heart"
               variant="ghost"
@@ -217,18 +155,32 @@ const disclaimerModal = ref(!acknowledged.value)
               variant="ghost"
               color="neutral"
             />
+            <HeaderProfile 
+              class="lg:hidden"
+              :showDetails="false"
+              :userDisplayName="user.user_metadata?.display_name"
+              :username="user.email?.split('@')[0]"
+              :userProfilePic="user?.user_metadata?.avatar_url"
+            />
           </div>
-          <div v-else>
+          <div v-else class="flex items-center">
+            <HeaderCategories :show-label="false" class="md:hidden" />
             <AuthRegister />
             <AuthLogin />
           </div>
-          <UButton
-            loading-auto
-            loading-icon="i-lucide-loader"
-            label="Sell"
-            class="font-bold text-white"
-            @click="sellItem"
-          />
+          <div 
+            class="fixed bottom-5 right-5 z-50
+                  md:relative md:bottom-auto md:right-auto"
+          >
+            <UButton
+              loading-auto
+              loading-icon="i-lucide-loader"
+              class="font-bold text-white rounded-full md:rounded-md text-lg py-2.5 px-4 md:px-2.5 md:py-1.5 md:text-sm"
+              @click="sellItem"
+            >
+              <UIcon name="i-lucide-plus" class="md:hidden inline-block"></UIcon>Sell
+            </UButton>
+          </div>
         </div>
       </template>
 
@@ -272,6 +224,5 @@ const disclaimerModal = ref(!acknowledged.value)
         />
       </template>
     </UFooter>
-    <AuthLogout v-model:open="isLogoutOpen" />
   </div>
 </template>

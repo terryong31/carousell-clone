@@ -9,12 +9,18 @@ const colorMode = useColorMode()
       src="/carousell.svg"
       alt="Carousell"
       v-bind="$attrs"
-    >
+      class="hidden sm:inline-block"
+    />
     <img
       v-if="colorMode.value === 'light'"
       src="/carousell-light.svg"
       alt="Carousell"
       v-bind="$attrs"
-    >
+      class="hidden sm:inline-block"
+    />
+    <img
+      src="/carousell-header-logo.svg"
+      class="sm:hidden"
+    />
   </ClientOnly>
 </template>
