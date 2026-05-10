@@ -4,7 +4,7 @@ export const useAuth = () => {
   const signIn = async (userEmail: string, userPassword: string) => {
     const result = await supabase.auth.signInWithPassword({
       email: userEmail,
-      password: userPassword,
+      password: userPassword
     })
     return result
   }

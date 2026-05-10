@@ -93,7 +93,7 @@ export default defineAppConfig({
     },
 
     main: {
-      base: 'min-h-[calc(100vh-var(--ui-header-height))]',
+      base: 'min-h-[calc(100vh-var(--ui-header-height))]'
     },
 
     footer: {
