@@ -10,9 +10,18 @@ export default defineNuxtConfig({
   ],
 
   $development: {
+    runtimeConfig: {
+      public: {
+        siteUrl: 'http://localhost:3001'
+      }
+    }
   },
-
   $production: {
+    runtimeConfig: {
+      public: {
+        siteUrl: 'https://carousell.website-clones.my'
+      }
+    }
   },
 
   ssr: true,

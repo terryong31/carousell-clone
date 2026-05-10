@@ -5,6 +5,8 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 import { categories } from '~/constants/categories'
 
+const showSellHeader = useState('showSellHeader')
+
 const router = useRouter()
 
 const user = useSupabaseUser()
@@ -39,63 +41,72 @@ const disclaimerModal = ref(!acknowledged.value)
 
 <template>
   <!-- Disclaimer Modal -->
-  <div>
-    <UModal
-      v-model:open="disclaimerModal"
-      :dismissible="false"
-      title="Disclaimer"
-      :close="false"
-    >
-      <template #body>
-        <div>
-          <p>
-            By using this site, I acknowledge that this website is not official Carousell's website but a clone made by <ULink
-              target="_blank"
-              to="https://github.com/terryong31"
-            >Terry Ong</ULink> to showcase his web development skills for portfolio purposes
-          </p>
-        </div>
-      </template>
-      <template #footer>
-        <div class="flex items-center justify-end gap-4">
-          <UButton
-            label="I acknowledge"
-            @click="
-              disclaimerModal = false,
-              acknowledged = true"
-          />
-          <ULink
-            to="https://carousell.com"
-            class="text-sm"
-          >Go to Carousell Website</ULink>
-        </div>
-      </template>
-    </UModal>
+  <UModal
+    v-model:open="disclaimerModal"
+    :dismissible="false"
+    title="Disclaimer"
+    :close="false"
+  >
+    <template #body>
+      <div>
+        <p>
+          By using this site, I acknowledge that this website is not official Carousell's website but a clone made by <ULink
+            target="_blank"
+            to="https://github.com/terryong31"
+          >Terry Ong</ULink> to showcase his web development skills for portfolio purposes
+        </p>
+      </div>
+    </template>
+    <template #footer>
+      <div class="flex items-center justify-end gap-4">
+        <UButton
+          label="I acknowledge"
+          @click="
+            disclaimerModal = false,
+            acknowledged = true"
+        />
+        <ULink
+          to="https://carousell.com"
+          class="text-sm"
+        >Go to Carousell Website</ULink>
+      </div>
+    </template>
+  </UModal>
 
     <!-- Main Content Here Below -->
-
     <UBanner
       id="disclaimer"
       icon="i-lucide-circle-alert"
       title="WARNING! THIS IS NOT CAROUSELL'S OFFICIAL WEBSITE, ITS A CLONE FOR DEVELOPER PORTFOLIO PURPOSES! CREATED BY TERRY ONG"
       close
     />
+
+    <div class="px-5.5 sm:px-6 md:px-8 lg:px-16">
     <UHeader
       :toggle="false"
-      :ui="{ root: 'h-auto', container: 'h-(--ui-header-height)' }"
+      :ui="{ 
+        root: 'h-auto', 
+        container: 'h-(--ui-header-height) mx-auto' 
+        }"
     >
       <template #left>
         <NuxtLink
           to="/"
           class="shrink-0"
         >
-          <AppLogo class="h-7 md:h-8 pr-4" />
+          <AppLogo 
+            class="h-8 pr-4" 
+            :class="{ 'hidden sm:inline-block': user }" 
+          />
+          <div v-if="user" class="sm:hidden"> 
+            <img src="/carousell-header-logo.svg" class="h-8">
+          </div>
         </NuxtLink>
 
         <UNavigationMenu
           :items="headerItems"
           content-orientation="vertical"
-          class="hidden xl:flex justify-center"
+          class="hidden lg:flex justify-center"
           :ui="{
             linkLeadingIcon: 'hidden',
             linkTrailingIcon: 'hidden',
@@ -106,8 +117,11 @@ const disclaimerModal = ref(!acknowledged.value)
           }"
         />
 
-        <div >
-          <HeaderCategories class="hidden md:block" :show-label="true" />
+        <div>
+          <HeaderCategories
+            class="hidden 2xl:block"
+            :show-label="true"
+          />
         </div>
       </template>
 
@@ -127,13 +141,16 @@ const disclaimerModal = ref(!acknowledged.value)
             v-if="user"
             class="flex items-center gap-1"
           >
-            <HeaderCategories :show-label="false" class="md:hidden" />
-            <HeaderProfile 
+            <HeaderCategories
+              :show-label="false"
+              class="md:hidden"
+            />
+            <HeaderProfile
               class="hidden lg:block"
-              :showDetails="true"
-              :userDisplayName="user.user_metadata?.display_name"
+              :show-details="true"
+              :user-display-name="user.user_metadata?.display_name"
               :username="user.email?.split('@')[0]"
-              :userProfilePic="user?.user_metadata?.avatar_url"
+              :user-profile-pic="user?.user_metadata?.avatar_url"
             />
             <UButton
               icon="i-lucide-heart"
@@ -155,20 +172,26 @@ const disclaimerModal = ref(!acknowledged.value)
               variant="ghost"
               color="neutral"
             />
-            <HeaderProfile 
-              class="lg:hidden"
-              :showDetails="false"
-              :userDisplayName="user.user_metadata?.display_name"
+            <HeaderProfile
+              class="lg:hidden !px-0 !py-0"
+              :show-details="false"
+              :user-display-name="user.user_metadata?.display_name"
               :username="user.email?.split('@')[0]"
-              :userProfilePic="user?.user_metadata?.avatar_url"
+              :user-profile-pic="user?.user_metadata?.avatar_url"
             />
           </div>
-          <div v-else class="flex items-center">
-            <HeaderCategories :show-label="false" class="md:hidden" />
+          <div
+            v-else
+            class="flex items-center"
+          >
+            <HeaderCategories
+              :show-label="false"
+              class="sm:hidden"
+            />
             <AuthRegister />
             <AuthLogin />
           </div>
-          <div 
+          <div
             class="fixed bottom-5 right-5 z-50
                   md:relative md:bottom-auto md:right-auto"
           >
@@ -178,7 +201,10 @@ const disclaimerModal = ref(!acknowledged.value)
               class="font-bold text-white rounded-full md:rounded-md text-lg py-2.5 px-4 md:px-2.5 md:py-1.5 md:text-sm"
               @click="sellItem"
             >
-              <UIcon name="i-lucide-plus" class="md:hidden inline-block"></UIcon>Sell
+              <UIcon
+                name="i-lucide-plus"
+                class="md:hidden inline-block"
+              />Sell
             </UButton>
           </div>
         </div>
@@ -186,7 +212,7 @@ const disclaimerModal = ref(!acknowledged.value)
 
       <template #bottom>
         <HeaderSearch v-if="route.meta.showSearch" />
-        <HeaderSell v-if="route.meta.showSell" />
+        <HeaderSell v-if="showSellHeader" />
       </template>
     </UHeader>
 
