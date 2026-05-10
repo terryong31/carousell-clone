@@ -62,15 +62,18 @@ const products = Array.from({ length: 8 }, (_, i) => ({
         :slides-to-scroll="3"
         :breakpoints="{
           '(min-width: 640px)': {
-            slidesToScroll: 6
+            slidesToScroll: 5
           },
           '(min-width: 768px)': {
-            slidesToScroll: 9
+            slidesToScroll: 7
+          },
+          '(min-width: 1024px)': {
+            slidesToScroll: 11
           }
         }"
         :items="carouselCategoryList"
         :ui="{
-          item: 'md:basis-1/9 sm:basis-1/6 basis-1/3',
+          item: 'lg:basis-1/11 md:basis-1/7 sm:basis-1/5 basis-1/3',
           arrows: 'flex items-center justify-between pointer-events-none z-[1] absolute inset-0 -mx-4 sm:mx-7 md:mx-7 lg:mx-7',
           prev: 'pointer-events-auto rounded-full bg-white/90 dark:bg-gray-900/90 shadow-md text-neutral-900 dark:text-white p-2',
           next: 'pointer-events-auto rounded-full bg-white/90 dark:bg-gray-900/90 shadow-md text-neutral-900 dark:text-white p-2'
@@ -108,7 +111,7 @@ const products = Array.from({ length: 8 }, (_, i) => ({
           <template #header>
             <div class="grid gap-x-2 w-fit">
 
-              <div class="row-span-2 size-7 flex items-center justify-center">
+              <div class="row-span-2 size-5 flex items-center justify-center">
                 <img
                   src="/blank_profile_pic.webp"
                   class="w-full aspect-[1/1] rounded-full object-cover"

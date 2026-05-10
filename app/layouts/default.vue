@@ -5,6 +5,8 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 import { categories } from '~/constants/categories'
 
+const showSellHeader = useState('showSellHeader')
+
 const router = useRouter()
 
 const user = useSupabaseUser()
@@ -38,8 +40,8 @@ const disclaimerModal = ref(!acknowledged.value)
 </script>
 
 <template>
-  <!-- Disclaimer Modal -->
   <div>
+    <!-- Disclaimer Modal -->
     <UModal
       v-model:open="disclaimerModal"
       :dismissible="false"
@@ -73,156 +75,188 @@ const disclaimerModal = ref(!acknowledged.value)
     </UModal>
 
     <!-- Main Content Here Below -->
-
     <UBanner
       id="disclaimer"
       icon="i-lucide-circle-alert"
       title="WARNING! THIS IS NOT CAROUSELL'S OFFICIAL WEBSITE, ITS A CLONE FOR DEVELOPER PORTFOLIO PURPOSES! CREATED BY TERRY ONG"
       close
     />
-    <UHeader
-      :toggle="false"
-      :ui="{ root: 'h-auto', container: 'h-(--ui-header-height)' }"
-    >
-      <template #left>
-        <NuxtLink
-          to="/"
-          class="shrink-0"
-        >
-          <AppLogo class="h-7 md:h-8 pr-4" />
-        </NuxtLink>
 
-        <UNavigationMenu
-          :items="headerItems"
-          content-orientation="vertical"
-          class="hidden xl:flex justify-center"
-          :ui="{
-            linkLeadingIcon: 'hidden',
-            linkTrailingIcon: 'hidden',
-            viewport: 'min-w-10',
-            content: 'p-1',
-            childList: 'flex flex-col gap-1',
-            childLinkIcon: 'hidden'
-          }"
-        />
-
-        <div >
-          <HeaderCategories class="hidden md:block" :show-label="true" />
-        </div>
-      </template>
-
-      <template #body>
-        <UNavigationMenu
-          :items="headerItems"
-          orientation="vertical"
-          :ui="{
-            childList: 'flex flex-col gap-1'
-          }"
-        />
-      </template>
-
-      <template #right>
-        <div class="flex items-center gap-2">
-          <div
-            v-if="user"
-            class="flex items-center gap-1"
+    <div class="px-5.5 sm:px-6 md:px-8 lg:px-16">
+      <UHeader
+        :toggle="false"
+        :ui="{
+          root: 'h-auto',
+          container: 'h-(--ui-header-height) mx-auto'
+        }"
+      >
+        <template #left>
+          <NuxtLink
+            to="/"
+            class="shrink-0"
           >
-            <HeaderCategories :show-label="false" class="md:hidden" />
-            <HeaderProfile 
-              class="hidden lg:block"
-              :showDetails="true"
-              :userDisplayName="user.user_metadata?.display_name"
-              :username="user.email?.split('@')[0]"
-              :userProfilePic="user?.user_metadata?.avatar_url"
+            <AppLogo
+              class="h-8 pr-4"
+              :class="{ 'hidden sm:inline-block': user }"
             />
-            <UButton
-              icon="i-lucide-heart"
-              variant="ghost"
-              color="neutral"
-            />
-            <UButton
-              icon="i-lucide-shopping-cart"
-              variant="ghost"
-              color="neutral"
-            />
-            <UButton
-              icon="i-lucide-bell"
-              variant="ghost"
-              color="neutral"
-            />
-            <UButton
-              icon="i-lucide-message-circle"
-              variant="ghost"
-              color="neutral"
-            />
-            <HeaderProfile 
-              class="lg:hidden"
-              :showDetails="false"
-              :userDisplayName="user.user_metadata?.display_name"
-              :username="user.email?.split('@')[0]"
-              :userProfilePic="user?.user_metadata?.avatar_url"
-            />
-          </div>
-          <div v-else class="flex items-center">
-            <HeaderCategories :show-label="false" class="md:hidden" />
-            <AuthRegister />
-            <AuthLogin />
-          </div>
-          <div 
-            class="fixed bottom-5 right-5 z-50
-                  md:relative md:bottom-auto md:right-auto"
-          >
-            <UButton
-              loading-auto
-              loading-icon="i-lucide-loader"
-              class="font-bold text-white rounded-full md:rounded-md text-lg py-2.5 px-4 md:px-2.5 md:py-1.5 md:text-sm"
-              @click="sellItem"
+            <div
+              v-if="user"
+              class="sm:hidden"
             >
-              <UIcon name="i-lucide-plus" class="md:hidden inline-block"></UIcon>Sell
-            </UButton>
+              <img
+                src="/carousell-header-logo.svg"
+                class="h-8"
+              >
+            </div>
+          </NuxtLink>
+
+          <UNavigationMenu
+            :items="headerItems"
+            content-orientation="vertical"
+            class="hidden lg:flex justify-center"
+            :ui="{
+              linkLeadingIcon: 'hidden',
+              linkTrailingIcon: 'hidden',
+              viewport: 'min-w-10',
+              content: 'p-1',
+              childList: 'flex flex-col gap-1',
+              childLinkIcon: 'hidden'
+            }"
+          />
+
+          <div>
+            <HeaderCategories
+              class="hidden 2xl:block"
+              :show-label="true"
+            />
           </div>
-        </div>
-      </template>
+        </template>
 
-      <template #bottom>
-        <HeaderSearch v-if="route.meta.showSearch" />
-        <HeaderSell v-if="route.meta.showSell" />
-      </template>
-    </UHeader>
+        <template #body>
+          <UNavigationMenu
+            :items="headerItems"
+            orientation="vertical"
+            :ui="{
+              childList: 'flex flex-col gap-1'
+            }"
+          />
+        </template>
 
-    <slot />
+        <template #right>
+          <div class="flex items-center gap-2">
+            <div
+              v-if="user"
+              class="flex items-center gap-1"
+            >
+              <HeaderCategories
+                :show-label="false"
+                class="md:hidden"
+              />
+              <HeaderProfile
+                class="hidden lg:block"
+                :show-details="true"
+                :user-display-name="user.user_metadata?.display_name"
+                :username="user.email?.split('@')[0]"
+                :user-profile-pic="user?.user_metadata?.avatar_url"
+              />
+              <UButton
+                icon="i-lucide-heart"
+                variant="ghost"
+                color="neutral"
+              />
+              <UButton
+                icon="i-lucide-shopping-cart"
+                variant="ghost"
+                color="neutral"
+              />
+              <UButton
+                icon="i-lucide-bell"
+                variant="ghost"
+                color="neutral"
+              />
+              <UButton
+                icon="i-lucide-message-circle"
+                variant="ghost"
+                color="neutral"
+              />
+              <HeaderProfile
+                class="lg:hidden !px-0 !py-0"
+                :show-details="false"
+                :user-display-name="user.user_metadata?.display_name"
+                :username="user.email?.split('@')[0]"
+                :user-profile-pic="user?.user_metadata?.avatar_url"
+              />
+            </div>
+            <div
+              v-else
+              class="flex items-center"
+            >
+              <HeaderCategories
+                :show-label="false"
+                class="sm:hidden"
+              />
+              <AuthRegister />
+              <AuthLogin />
+            </div>
+            <div
+              class="fixed bottom-5 right-5 z-50
+                    md:relative md:bottom-auto md:right-auto"
+            >
+              <UButton
+                loading-auto
+                loading-icon="i-lucide-loader"
+                class="font-bold text-white rounded-full md:rounded-md text-lg py-2.5 px-4 md:px-2.5 md:py-1.5 md:text-sm"
+                @click="sellItem"
+              >
+                <UIcon
+                  name="i-lucide-plus"
+                  class="md:hidden inline-block"
+                />Sell
+              </UButton>
+            </div>
+          </div>
+        </template>
 
-    <USeparator
-      type="solid"
-      class="h-px"
-    />
+        <template #bottom>
+          <HeaderSearch v-if="route.meta.showSearch" />
+          <HeaderSell v-if="showSellHeader" />
+        </template>
+      </UHeader>
 
-    <UFooter>
-      <template #top>
-        <UContainer>
-          <AppLogo />
-        </UContainer>
-      </template>
+      <slot />
 
-      <template #left>
-        <div>
-          <p>Mudah.my Sdn Bhd<br>[200701024583 (782603-V)]<br>a Carousell Group company</p>
-        </div>
-      </template>
-
-      <UNavigationMenu
-        :items="footerDefaultItems"
-        variant="link"
+      <USeparator
+        type="solid"
+        class="h-px"
       />
 
-      <template #right>
-        <UColorModeSelect />
-        <ULocaleSelect
-          v-model="locale"
-          :locales="Object.values(locales)"
-          class="w-48"
+      <UFooter>
+        <template #top>
+          <UContainer>
+            <AppLogo />
+          </UContainer>
+        </template>
+
+        <template #left>
+          <div>
+            <p>Mudah.my Sdn Bhd<br>[200701024583 (782603-V)]<br>a Carousell Group company</p>
+          </div>
+        </template>
+
+        <UNavigationMenu
+          :items="footerDefaultItems"
+          variant="link"
         />
-      </template>
-    </UFooter>
+
+        <template #right>
+          <UColorModeSelect />
+          <ULocaleSelect
+            v-model="locale"
+            :locales="Object.values(locales)"
+            class="w-48"
+          />
+        </template>
+      </UFooter>
+    </div>
   </div>
 </template>
