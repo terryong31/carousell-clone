@@ -84,9 +84,11 @@ const distance: Array<Array<DropdownMenuItem>> = [
       </div>
       <div class="hidden md:block bg-neutral-100 dark:bg-neutral-800 p-1">
         <UButton
-          color="success"
           label="Search"
           class="font-bold text-white"
+          :ui="{
+            base: 'bg-green-600 hover:bg-green-800 active:bg-green-800'
+          }"
         />
       </div>
     </div>

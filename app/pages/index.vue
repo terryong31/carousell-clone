@@ -105,7 +105,7 @@ const products = Array.from({ length: 8 }, (_, i) => ({
       <NuxtLink
         v-for="product in products"
         :key="product.id"
-        :to="`/product/${product.id}`"
+        :to="`/p/${product.id}`"
       >
         <UCard>
           <template #header>

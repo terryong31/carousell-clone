@@ -33,13 +33,18 @@ const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
         description="SVG, PNG, JPG or GIF (max. 2MB)"
         layout="list"
         multiple
+        :ui="{
+          base: 'border-green-400 border-2 bg-green-400/20 hover:bg-green-400/20 dark:text-white'
+        }"
         class="w-full min-h-48"
       >
         <template #actions="{ open }">
           <UButton
             label="Select images"
             icon="i-lucide-upload"
-            color="neutral"
+            :ui="{
+              base: 'bg-green-600 hover:bg-green-600 border-none ring-green-300 text-white'
+            }"
             variant="outline"
             @click.stop="open()"
           />
@@ -67,7 +72,7 @@ const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
         <p>No listing needed, sell directly to us</p>
       </div>
 
-      <div class="bg-[#19191a] flex flex-col text-center justify-center items-center rounded-md border border-default h-full">
+      <div class="dark:bg-[#19191a] flex flex-col text-center justify-center items-center rounded-md border border-default h-full">
         <div
           v-if="!user"
           class="px-36 py-24"

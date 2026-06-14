@@ -82,12 +82,12 @@ const disclaimerModal = ref(!acknowledged.value)
       close
     />
 
-    <div class="px-5.5 sm:px-6 md:px-8 lg:px-16">
+    <div>
       <UHeader
         :toggle="false"
         :ui="{
           root: 'h-auto',
-          container: 'h-(--ui-header-height) mx-auto'
+          container: 'h-(--ui-header-height)'
         }"
       >
         <template #left>
@@ -115,6 +115,7 @@ const disclaimerModal = ref(!acknowledged.value)
             content-orientation="vertical"
             class="hidden lg:flex justify-center"
             :ui="{
+              link: 'text-default',
               linkLeadingIcon: 'hidden',
               linkTrailingIcon: 'hidden',
               viewport: 'min-w-10',
@@ -126,7 +127,7 @@ const disclaimerModal = ref(!acknowledged.value)
 
           <div>
             <HeaderCategories
-              class="hidden 2xl:block"
+              class="hidden xl:block"
               :show-label="true"
             />
           </div>
@@ -226,8 +227,7 @@ const disclaimerModal = ref(!acknowledged.value)
       <slot />
 
       <USeparator
-        type="solid"
-        class="h-px"
+        type="dashed"
       />
 
       <UFooter>
