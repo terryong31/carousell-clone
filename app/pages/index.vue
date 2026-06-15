@@ -10,16 +10,6 @@ const carouselItems = (Object.values(images) as { default: string }[]).map(img =
 
 // Flatten the categories to show all sub-categories in the carousel
 const carouselCategoryList = categories.flatMap(cat => cat.children || [])
-
-const products = Array.from({ length: 8 }, (_, i) => ({
-  id: i,
-  name: `Awesome Product ${i + 1}`,
-  price: 'RM100',
-  sellerName: `Seller Name ${i + 1}`,
-  daysAgo: `${i + 1} days ago`,
-  condition: 'Brand new',
-  likeCount: 5
-}))
 </script>
 
 <template>
@@ -101,53 +91,6 @@ const products = Array.from({ length: 8 }, (_, i) => ({
     <h1 class="font-black text-2xl">
       Recommended For You
     </h1>
-    <div class="grid md:grid-cols-4 gap-6 grid-cols-2">
-      <NuxtLink
-        v-for="product in products"
-        :key="product.id"
-        :to="`/p/${product.id}`"
-      >
-        <UCard>
-          <template #header>
-            <div class="grid gap-x-2 w-fit">
-
-              <div class="row-span-2 size-5 flex items-center justify-center">
-                <img
-                  src="/blank_profile_pic.webp"
-                  class="w-full aspect-[1/1] rounded-full object-cover"
-                >
-              </div>
-
-              <div class="col-start-2 row-start-1 font-bold">
-                {{ product.sellerName }}
-              </div>
-
-              <div class="col-start-2 row-start-2">
-                {{ product.daysAgo }}
-              </div>
-
-            </div>
-          </template>
-
-          <img
-            src="/shrek.webp"
-            class="w-full aspect-[1/1] rounded-md object-cover"
-          >
-
-          <template #footer>
-            <p>{{ product.name }}</p>
-            <p class="font-bold text-lg">{{ product.price }}</p>
-            <p>{{ product.condition }}</p>
-            <div class="pt-3 flex items-center gap-1">
-              <UIcon
-                name="i-lucide-heart"
-                class="size-4"
-              />
-              <span>{{ product.likeCount }}</span>
-            </div>
-          </template>
-        </UCard>
-      </NuxtLink>
-    </div>
+    <ItemCard />
   </div>
 </template>

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import * as locales from '@nuxt/ui/locale'
 
-import type { NavigationMenuItem } from '@nuxt/ui'
-
 import { categories } from '~/constants/categories'
 
 const showSellHeader = useState('showSellHeader')
@@ -17,22 +15,48 @@ const locale = ref('en')
 
 const headerItems = categories
 
-const footerDefaultItems = computed<Array<NavigationMenuItem>>(() => [
-  {
-    label: 'About',
-    to: '/about',
-    target: '_blank'
-  },
-  {
-    label: 'Contact Us',
-    to: '/contact',
-    target: '_blank'
-  }
-])
-
 async function sellItem() {
   router.push('/sell')
 }
+
+const footerInfoUrls = [
+  {
+    label: 'Help Center',
+    redirectUrl: 'https://support.carousell.com/hc/en-us?origin=web&platform=web'
+  },
+  {
+    label: 'Contact Us',
+    redirectUrl: 'https://support.carousell.com/hc/en-us/requests/new?open_chat_bot=true&origin=web&platform=web'
+  },
+  {
+    label: 'Press',
+    redirectUrl: 'https://press.carousell.com/'
+  },
+  {
+    label: 'Sustainability',
+    redirectUrl: 'https://carousell.com/sustainability/l/'
+  },
+  {
+    label: 'Jobs',
+    redirectUrl: 'https://careers.carousell.com/'
+  },
+  {
+    label: 'Advertise with Us',
+    redirectUrl: 'https://docs.google.com/forms/d/1ZhprlP1FZ7Jk55RqlkAnT6YcV9DTDUoFM1gLCM59L6A/'
+  },
+  {
+    label: 'Terms',
+    redirectUrl: 'https://support.carousell.com/hc/en-us/articles/360038207054'
+  },
+  {
+    label: 'Privacy',
+    redirectUrl: 'https://support.carousell.com/hc/en-us/articles/360016106213'
+  },
+  {
+    label: 'Business Conduct',
+    redirectUrl: 'https://support.carousell.com/hc/en-us/articles/45022750135449-Third-Party-Code-of-Business-Conduct-and-Ethics'
+  }
+]
 
 const acknowledged = useCookie('disclaimer-acknowledged', { default: () => false })
 
@@ -231,30 +255,83 @@ const disclaimerModal = ref(!acknowledged.value)
       />
 
       <UFooter>
-        <template #top>
-          <UContainer>
-            <AppLogo />
-          </UContainer>
-        </template>
-
         <template #left>
-          <div>
+          <div class="flex gap-4">
             <p>Mudah.my Sdn Bhd<br>[200701024583 (782603-V)]<br>a Carousell Group company</p>
+            <USeparator
+              orientation="vertical"
+              class="h-auto self-stretch"
+              size="sm"
+            />
           </div>
         </template>
 
-        <UNavigationMenu
-          :items="footerDefaultItems"
-          variant="link"
-        />
+        <div class="flex items-center flex-1 pl-4 pr-2 min-w-0">
+          <div class="flex flex-wrap items-center gap-y-1">
+            <template
+              v-for="({ label, redirectUrl }, index) in footerInfoUrls"
+              :key="label"
+            >
+              <ULink
+                :to="redirectUrl"
+                target="_blank"
+                class="text-xs font-semibold"
+              >
+                {{ label }}
+              </ULink>
+              <span
+                v-if="index < footerInfoUrls.length - 1"
+                class="mx-1 text-xs text-neutral-500"
+              >•</span>
+            </template>
+          </div>
+        </div>
 
         <template #right>
-          <UColorModeSelect />
+          <div class="flex items-center gap-2 mr-4">
+            <UIcon
+              name="i-circle-flags-au"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-ca"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-hk"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-id"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-my"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-nz"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-ph"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-sg"
+              class="size-5"
+            />
+            <UIcon
+              name="i-circle-flags-tw"
+              class="size-5"
+            />
+          </div>
           <ULocaleSelect
             v-model="locale"
             :locales="Object.values(locales)"
-            class="w-48"
+            class="w-40"
           />
+          <UColorModeSelect />
         </template>
       </UFooter>
     </div>

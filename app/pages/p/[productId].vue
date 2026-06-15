@@ -125,6 +125,61 @@ const displayedDealMethods = computed(() => {
   return first ? [first] : []
 })
 
+const sellerReviewsList = [
+  {
+    userName: 'luckywind_292340',
+    avatar: 'https://i.pravatar.cc/150?img=11',
+    timeAgo: '13 days ago',
+    rating: 5,
+    comment: 'Legit seller. Item kualiti 🫡 Mantap !',
+    product: {
+      name: 'Hanes Beefy-T White Unisex Heavyweight Cotton T-shirt. Size M',
+      price: '45',
+      image: 'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_262a3a21_progressive.jpg'
+    }
+  },
+  {
+    userName: 'eina.',
+    avatar: 'https://i.pravatar.cc/150?img=22',
+    timeAgo: '29 days ago',
+    rating: 5,
+    comment: 'Very good seller',
+    product: {
+      name: 'Paige Premium Denim Women Laurel Canyon Low Rise Bootcut Jeans. Ma...',
+      price: '179',
+      image: 'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_c476b452_progressive.jpg'
+    }
+  },
+  {
+    userName: 'thisismez',
+    avatar: 'https://i.pravatar.cc/150?img=33',
+    timeAgo: '1 month ago',
+    rating: 5,
+    comment: 'Nice seller easy to deal with no drama',
+    product: {
+      name: 'Uniqlo Men Linen Gingham Shirt. Size S',
+      price: '49',
+      image: 'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_5ff5e902_progressive.jpg'
+    }
+  }
+]
+
+const searchQueries = [
+  'tribal',
+  'kain bulu',
+  'nudie jeans skinny',
+  'jil sander',
+  'ax jeans',
+  'seluar punk',
+  'mossimo', 'rrl',
+  'lee 101',
+  'makita drill cordless',
+  'nike raincoat',
+  'electric skateboard',
+  'air jordan 18',
+  'tayar murah'
+]
+
 useSeoMeta({
   title: itemData.name
 })
@@ -189,7 +244,7 @@ useSeoMeta({
         </UCarousel>
       </div>
       <div class="flex gap-4">
-        <div class="flex flex-col gap-4">
+        <div class="flex-1 min-w-0 flex flex-col gap-4">
           <div>
             <UButton
               v-if="itemData.buyerProtection"
@@ -224,7 +279,7 @@ useSeoMeta({
                 color="neutral"
                 size="xl"
                 :ui="{
-                  base: 'hover:text-green-600 hover:ring-green-600 hover:bg-0'
+                  base: 'hover:text-green-600 hover:ring-green-600 hover:bg-0 active:bg-neutral'
                 }"
               />
             </div>
@@ -235,7 +290,7 @@ useSeoMeta({
                 color="neutral"
                 size="xl"
                 :ui="{
-                  base: 'hover:text-green-600 hover:ring-green-600 hover:bg-0'
+                  base: 'hover:text-green-600 hover:ring-green-600 hover:bg-0 active:bg-neutral'
                 }"
               />
             </div>
@@ -301,11 +356,11 @@ useSeoMeta({
               <div
                 v-for="(method, index) in displayedDealMethods"
                 :key="index"
-                class="w-150"
+                class="w-130"
               >
                 <USeparator
                   v-if="index > 0"
-                  class="w-150 my-8"
+                  class="w-130 my-8"
                   size="sm"
                 />
 
@@ -330,7 +385,7 @@ useSeoMeta({
 
                 <div
                   v-if="method.type === 'meetup' && method.locationName"
-                  class="pt-2"
+                  class="pt-2 pb-6"
                 >
                   <ULink
                     :to="method.locationUrl"
@@ -354,7 +409,9 @@ useSeoMeta({
           <div>
             <UModal title="FAQ">
               <div class="flex h-12 items-center hover:cursor-pointer">
-                <div><h1>FAQ</h1></div>
+                <div>
+                  <h1>FAQ</h1>
+                </div>
                 <div class="ml-auto">
                   <UIcon name="i-lucide-chevron-right" />
                 </div>
@@ -380,11 +437,191 @@ useSeoMeta({
             </UModal>
           </div>
           <USeparator size="sm" />
-          <div>
-            Seller details
+          <div class="pt-8">
+            <USeparator
+              position="start"
+              size="lg"
+            >
+              <h1>Meet the Seller</h1>
+            </USeparator>
+          </div>
+          <div class="flex gap-8 pt-6 w-full items-start">
+            <!-- Left Column: Seller Card & Action Buttons -->
+            <div class="flex flex-col gap-4 w-80 shrink-0">
+              <UCard
+                class="p-4"
+                :ui="{
+                  root: 'ring-1'
+                }"
+              >
+                <div class="flex items-center gap-3">
+                  <UAvatar
+                    :src="itemData.userPicUrl"
+                    size="3xl"
+                  />
+                  <div class="flex flex-col">
+                    <span class="font-bold text-neutral-900 dark:text-white">{{ itemData.userFullName }}</span>
+                    <ULink class="text-sm text-neutral-500 hover:text-neutral-500 flex items-center gap-0.5 mt-0.5">
+                      Profile details
+                      <UIcon
+                        name="i-lucide-chevron-right"
+                        class="size-3"
+                      />
+                    </ULink>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-4 px-2 w-full">
+                  <div class="flex flex-col items-center justify-center gap-1">
+                    <div class="flex items-center gap-0.5">
+                      <span class="font-bold text-sm text-neutral-900 dark:text-white">
+                        {{ itemData.userRating.toFixed(1) }}
+                      </span>
+                      <UIcon
+                        name="i-material-symbols-star"
+                        class="size-4 text-green-600"
+                      />
+                    </div>
+                    <span class="text-xs text-neutral-500 dark:text-neutral-400">
+                      {{ itemData.userReviews }} reviews
+                    </span>
+                  </div>
+
+                  <div class="self-stretch w-px bg-neutral-200 dark:bg-neutral-800" />
+
+                  <div class="flex flex-col items-center justify-center gap-1">
+                    <span class="font-bold text-sm text-neutral-900 dark:text-white">111</span>
+                    <span class="text-xs text-neutral-500 dark:text-neutral-400">Orders</span>
+                  </div>
+
+                  <div class="self-stretch w-px bg-neutral-200 dark:bg-neutral-800" />
+
+                  <div class="flex flex-col items-center justify-center gap-1">
+                    <span class="font-bold text-sm text-neutral-900 dark:text-white">8 years</span>
+                    <span class="text-xs text-neutral-500 dark:text-neutral-400">on Carousell</span>
+                  </div>
+                </div>
+              </UCard>
+
+              <UButton
+                label="Make Offer"
+                block
+                color="neutral"
+                variant="outline"
+                size="xl"
+                class="font-bold hover:text-green-600 hover:ring-green-600 hover:bg-transparent transition-none active:bg-neutral"
+              />
+              <UButton
+                label="Chat"
+                block
+                variant="outline"
+                color="neutral"
+                size="xl"
+                class="font-bold hover:text-green-600 hover:ring-green-600 hover:bg-transparent transition-none active:bg-neutral"
+              />
+            </div>
+
+            <!-- Right Column: Reviews List -->
+            <div class="flex-1 flex flex-col min-w-0 gap-6">
+              <div class="flex items-center gap-2">
+                <h2 class="text-lg font-bold text-neutral-900 dark:text-white">
+                  Reviews for {{ itemData.userFullName }}
+                </h2>
+                <span class="text-sm text-neutral-500 dark:text-neutral-400 font-semibold">
+                  {{ itemData.userRating.toFixed(1) }}
+                </span>
+                <div class="flex items-center gap-0.5">
+                  <UIcon
+                    v-for="star in 5"
+                    :key="star"
+                    name="i-material-symbols-star"
+                    class="size-4.5 text-green-600"
+                  />
+                </div>
+                <span class="text-sm text-neutral-500 dark:text-neutral-400 font-semibold">
+                  ({{ itemData.userReviews }})
+                </span>
+              </div>
+
+              <div
+                v-for="(review, index) in sellerReviewsList"
+                :key="index"
+                class="flex gap-2 w-full"
+              >
+                <div class="flex gap-2 w-full">
+                  <div class="pt-2">
+                    <UAvatar
+                      :src="review.avatar"
+                      size="2xl"
+                    />
+                  </div>
+                  <div class="flex-1 flex flex-col min-w-0 gap-1">
+                    <div><span class="font-bold">{{ review.userName }}</span><span class="mx-3">•</span><span class="text-sm">{{ review.timeAgo }}</span></div>
+                    <div class="flex items-center gap-0.5">
+                      <UIcon
+                        v-for="star in 5"
+                        :key="star"
+                        :name="star <= (review.rating ?? 5) ? 'i-material-symbols-star' : 'i-material-symbols-star-outline'"
+                        class="size-4.5 text-green-600"
+                      />
+                    </div>
+                    <div>
+                      <p>{{ review.comment }}</p>
+                    </div>
+                    <div>
+                      <UCard
+                        variant="subtle"
+                        class="p-2"
+                        :ui="{
+                          root: '!pb-0'
+                        }"
+                      >
+                        <div class="flex items-center gap-3">
+                          <UAvatar
+                            size="2xl"
+                            :src="review.product.image"
+                            :ui="{
+                              root: 'rounded-md'
+                            }"
+                          />
+                          <div class="flex flex-col min-w-0 flex-1">
+                            <div>
+                              <p class="text-sm truncate">
+                                {{ review.product.name }}
+                              </p>
+                            </div>
+                            <div>
+                              <p class="text-sm">
+                                RM{{ review.product.price }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </UCard>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <ULink class="text-green-600 dark:text-green-500 flex items-center gap-0.5 text-md hover:underline">
+                  Read all reviews
+                  <UIcon
+                    name="i-lucide-chevron-right"
+                    class="size-4"
+                  />
+                </ULink>
+              </div>
+            </div>
+          </div>
+          <div class="pt-6">
+            <img
+              src="https://sl3-cdn.karousell.com/components/bp_ldp_promo_banner_V001_dweb_en.svg"
+              alt="buyer_protection_notice.svg"
+            >
           </div>
         </div>
-        <div class="ml-auto w-96">
+        <div class="ml-auto w-[350px] shrink-0">
           <UCard
             variant="subtle"
           >
@@ -482,6 +719,35 @@ useSeoMeta({
           </UCard>
         </div>
       </div>
+      <div class="pt-12">
+        <USeparator
+          position="start"
+          size="lg"
+        >
+          <h1>What others also search for</h1>
+        </USeparator>
+        <div class="py-8 flex gap-4 flex-wrap">
+          <UBadge
+            v-for="i in searchQueries"
+            :key="i"
+            size="xl"
+            class="rounded-full px-4 py-2"
+            variant="soft"
+            color="neutral"
+          >
+            {{ i }}
+          </UBadge>
+        </div>
+      </div>
+      <div class="pt-4">
+        <USeparator
+          position="start"
+          size="lg"
+        >
+          <h1>Similar Listings</h1>
+        </USeparator>
+      </div>
+      <ItemCard />
     </div>
   </div>
 </template>
