@@ -4,17 +4,17 @@ const colorMode = useColorMode()
 
 <template>
   <ClientOnly>
-    <img
+    <NuxtImg
       v-if="colorMode.value === 'dark'"
       src="/carousell.svg"
       alt="Carousell"
       v-bind="$attrs"
-    >
-    <img
+    />
+    <NuxtImg
       v-if="colorMode.value === 'light'"
       src="/carousell-light.svg"
       alt="Carousell"
       v-bind="$attrs"
-    >
+    />
   </ClientOnly>
 </template>

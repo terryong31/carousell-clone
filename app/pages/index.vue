@@ -2,11 +2,18 @@
 import { categories } from '~/constants/categories'
 
 definePageMeta({
-  showSearch: true
+  showSearch: true,
+  showBanner: true
 })
 
-const images = import.meta.glob('~/assets/ads/*.{png,jpg,jpeg,webp}', { eager: true })
-const carouselItems = (Object.values(images) as { default: string }[]).map(img => img.default)
+const carouselItems = [
+  '/ads/2df28c8f891a2441_(1500,610).jpeg',
+  '/ads/72cd7f6f4d445d8d_(1500,610).jpeg',
+  '/ads/848a5c74f130dae8_(1500,610).png',
+  '/ads/93fb4aa723abe827_(1500,610).png',
+  '/ads/9a64e4aa014408d2_(1500,610).png',
+  '/ads/ba6e69fcf27a41cf_(1500,610).png'
+]
 
 // Flatten the categories to show all sub-categories in the carousel
 const carouselCategoryList = categories.flatMap(cat => cat.children || [])
@@ -32,11 +39,11 @@ const carouselCategoryList = categories.flatMap(cat => cat.children || [])
         }"
         class="w-full"
       >
-        <img
+        <NuxtImg
           :src="item"
           class="rounded-lg aspect-[60/24.5] object-cover border border-neutral-200 dark:border-neutral-800 shadow-sm"
           loading="lazy"
-        >
+        />
       </UCarousel>
     </div>
 
@@ -78,7 +85,7 @@ const carouselCategoryList = categories.flatMap(cat => cat.children || [])
               :src="item.avatar?.src"
               :icon="item.icon"
               size="2xl"
-              class="bg-transparent size-20 text-neutral-700 dark:text-neutral-300 group-hover:text-primary transition-colors"
+              class="bg-transparent size-20 ease-in-out transition-all transform-gpu duration-500 hover:-translate-y-1 text-neutral-700 dark:text-neutral-300 group-hover:text-primary"
             />
           </div>
           <span class="text-xs font-medium text-center line-clamp-2 max-w-[80px] text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white">

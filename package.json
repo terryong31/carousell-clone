@@ -14,12 +14,16 @@
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/simple-icons": "^1.2.78",
     "@nuxt/content": "^3.13.0",
+    "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.8.2",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "better-sqlite3": "^12.9.0",
+    "browser-image-compression": "^2.0.2",
     "nuxt": "^4.4.2",
+    "pinia": "^3.0.4",
     "tailwindcss": "^4.2.2",
+    "vuedraggable": "^4.1.0",
     "zod": "^4.4.2"
   },
   "devDependencies": {

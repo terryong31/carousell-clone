@@ -9,18 +9,25 @@ const isLoginOpen = useState('auth-login-modal', () => false)
 
 const isRegisterOpen = useState('auth-register-modal', () => false)
 
-const state = reactive<Partial<LoginSchema>>({
-  email: undefined,
-  password: undefined
-})
-
 const loading = ref(false)
 
-async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
-  if (state.email && state.password) {
+const fields = [{
+  name: 'email',
+  type: 'email',
+  label: 'Email',
+  placeholder: 'Enter your email'
+}, {
+  name: 'password',
+  label: 'Password',
+  type: 'password',
+  placeholder: 'Enter your password'
+}]
+
+async function onLoginSubmit(event: FormSubmitEvent<LoginSchema>) {
+  if (event.data.email && event.data.password) {
     loading.value = true
     try {
-      const { data, error } = await signIn(state.email, state.password)
+      const { data, error } = await signIn(event.data.email, event.data.password)
       if (error) {
         toast.add({ title: 'Login Failed', description: 'Invalid login credentials', color: 'error' })
         return
@@ -53,56 +60,32 @@ async function onLoginSubmit(_event: FormSubmitEvent<LoginSchema>) {
       <AppLogo class="h-7" />
     </template>
     <template #body>
-      <div class="w-full text-center pb-4 text-xl font-bold">
-        Login
-      </div>
-      <UForm
-        id="login-form"
+      <UAuthForm
+        :fields="fields"
         :schema="loginSchema"
-        :state="state"
-        class="space-y-4"
+        :loading="loading"
+        title="Login"
+        align="top"
         @submit="onLoginSubmit"
       >
-        <UFormField
-          label="Email"
-          name="email"
-        >
-          <UInput
-            v-model="state.email"
-            class="w-full"
-          />
-        </UFormField>
-
-        <UFormField
-          label="Password"
-          name="password"
-          class="w-full"
-        >
-          <UInput
-            v-model="state.password"
-            type="password"
-            class="w-full"
-          />
-        </UFormField>
-
-        <div>
+        <template #password-hint>
           <ULink
             as="button"
             to="/forgot-password"
             active-class="text-default"
-            class="font-semibold"
+            class="font-semibold text-primary"
             @click="isLoginOpen = false"
           >Forgot password?</ULink>
-        </div>
-
-        <UButton
-          :loading="loading"
-          type="submit"
-          label="Log in"
-          form="login-form"
-          class="w-full justify-center"
-        />
-      </UForm>
+        </template>
+        <template #submit-button>
+          <UButton
+            :loading="loading"
+            type="submit"
+            label="Log in"
+            class="w-full justify-center"
+          />
+        </template>
+      </UAuthForm>
     </template>
 
     <template #footer>

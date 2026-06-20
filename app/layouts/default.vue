@@ -15,6 +15,58 @@ const locale = ref('en')
 
 const headerItems = categories
 
+const navContainerRef = ref<HTMLElement | null>(null)
+const maxVisibleItems = ref(categories.length)
+const visibleHeaderItems = computed(() => categories.slice(0, maxVisibleItems.value))
+
+let isMeasuring = false
+
+const checkNavOverflow = async () => {
+  const container = navContainerRef.value
+  if (!container || isMeasuring) return
+  isMeasuring = true
+
+  // Render every category first so we can measure the they truly need.
+  maxVisibleItems.value = categories.length
+  await nextTick()
+
+  const ul = container.querySelector('ul')
+  if (ul) {
+    // Drop categories from the right one at a time while the row overflows,
+    // i.e. while the "All Categories" button would overlap the last item.
+    let count = categories.length
+    while (count > 0 && ul.scrollWidth > container.clientWidth) {
+      count--
+      maxVisibleItems.value = count
+      await nextTick()
+    }
+
+    // Never leave a single lonely category: the moment the button reaches the
+    // second item, collapse everything into the "All Categories" drawer.
+    if (count === 1) {
+      count = 0
+      maxVisibleItems.value = 0
+    }
+  }
+
+  isMeasuring = false
+}
+
+onMounted(() => {
+  let frame = 0
+  const observer = new ResizeObserver(() => {
+    cancelAnimationFrame(frame)
+    frame = requestAnimationFrame(checkNavOverflow)
+  })
+  if (navContainerRef.value) {
+    observer.observe(navContainerRef.value)
+  }
+  onUnmounted(() => {
+    cancelAnimationFrame(frame)
+    observer.disconnect()
+  })
+})
+
 async function sellItem() {
   router.push('/sell')
 }
@@ -57,61 +109,26 @@ const footerInfoUrls = [
     redirectUrl: 'https://support.carousell.com/hc/en-us/articles/45022750135449-Third-Party-Code-of-Business-Conduct-and-Ethics'
   }
 ]
-
-const acknowledged = useCookie('disclaimer-acknowledged', { default: () => false })
-
-const disclaimerModal = ref(!acknowledged.value)
 </script>
 
 <template>
   <div>
-    <!-- Disclaimer Modal -->
-    <UModal
-      v-model:open="disclaimerModal"
-      :dismissible="false"
-      title="Disclaimer"
-      :close="false"
-    >
-      <template #body>
-        <div>
-          <p>
-            By using this site, I acknowledge that this website is not official Carousell's website but a clone made by <ULink
-              target="_blank"
-              to="https://github.com/terryong31"
-            >Terry Ong</ULink> to showcase his web development skills for portfolio purposes
-          </p>
-        </div>
-      </template>
-      <template #footer>
-        <div class="flex items-center justify-end gap-4">
-          <UButton
-            label="I acknowledge"
-            @click="
-              disclaimerModal = false,
-              acknowledged = true"
-          />
-          <ULink
-            to="https://carousell.com"
-            class="text-sm"
-          >Go to Carousell Website</ULink>
-        </div>
-      </template>
-    </UModal>
-
     <!-- Main Content Here Below -->
     <UBanner
-      id="disclaimer"
-      icon="i-lucide-circle-alert"
-      title="WARNING! THIS IS NOT CAROUSELL'S OFFICIAL WEBSITE, ITS A CLONE FOR DEVELOPER PORTFOLIO PURPOSES! CREATED BY TERRY ONG"
-      close
+      v-if="route.meta.showBanner"
+      id="ticket-scam"
+      color="neutral"
+      icon="i-lucide-triangle-alert"
+      title="Stay safe from ticket scams. Let’s stay safe together and avoid fake sellers when buying concert tickets."
     />
-
     <div>
       <UHeader
         :toggle="false"
         :ui="{
           root: 'h-auto',
-          container: 'h-(--ui-header-height)'
+          container: 'h-(--ui-header-height)',
+          left: 'flex-1 min-w-0',
+          right: 'flex-none lg:flex-none'
         }"
       >
         <template #left>
@@ -127,32 +144,30 @@ const disclaimerModal = ref(!acknowledged.value)
               v-if="user"
               class="sm:hidden"
             >
-              <img
+              <NuxtImg
                 src="/carousell-header-logo.svg"
                 class="h-8"
-              >
+              />
             </div>
           </NuxtLink>
 
-          <UNavigationMenu
-            :items="headerItems"
-            content-orientation="vertical"
-            class="hidden lg:flex justify-center"
-            :ui="{
-              link: 'text-default',
-              linkLeadingIcon: 'hidden',
-              linkTrailingIcon: 'hidden',
-              viewport: 'min-w-10',
-              content: 'p-1',
-              childList: 'flex flex-col gap-1',
-              childLinkIcon: 'hidden'
-            }"
-          />
-
-          <div>
-            <HeaderCategories
-              class="hidden xl:block"
-              :show-label="true"
+          <div
+            ref="navContainerRef"
+            class="hidden lg:flex flex-1 min-w-0 items-center"
+          >
+            <UNavigationMenu
+              :items="visibleHeaderItems"
+              content-orientation="vertical"
+              class="whitespace-nowrap"
+              :ui="{
+                link: 'text-default flex items-center justify-center py-2',
+                linkLeadingIcon: 'hidden',
+                linkTrailingIcon: 'hidden',
+                viewport: 'min-w-10',
+                content: 'p-1',
+                childList: 'flex flex-col gap-1',
+                childLinkIcon: 'hidden'
+              }"
             />
           </div>
         </template>
@@ -169,14 +184,20 @@ const disclaimerModal = ref(!acknowledged.value)
 
         <template #right>
           <div class="flex items-center gap-2">
+            <!-- Full "All Categories" label from md up, collapses to just the
+                 grid icon below md. -->
+            <HeaderCategories
+              class="hidden md:block"
+              :show-label="true"
+            />
+            <HeaderCategories
+              class="md:hidden"
+              :show-label="false"
+            />
             <div
               v-if="user"
               class="flex items-center gap-1"
             >
-              <HeaderCategories
-                :show-label="false"
-                class="md:hidden"
-              />
               <HeaderProfile
                 class="hidden lg:block"
                 :show-details="true"
@@ -216,10 +237,6 @@ const disclaimerModal = ref(!acknowledged.value)
               v-else
               class="flex items-center"
             >
-              <HeaderCategories
-                :show-label="false"
-                class="sm:hidden"
-              />
               <AuthRegister />
               <AuthLogin />
             </div>
@@ -255,9 +272,19 @@ const disclaimerModal = ref(!acknowledged.value)
       />
 
       <UFooter>
+        <template
+          v-if="route.meta.showFooter"
+          #top
+        >
+          <UContainer>
+            <FooterProduct />
+          </UContainer>
+        </template>
         <template #left>
           <div class="flex gap-4">
-            <p>Mudah.my Sdn Bhd<br>[200701024583 (782603-V)]<br>a Carousell Group company</p>
+            <p class="text-xs">
+              Mudah.my Sdn Bhd<br>[200701024583 (782603-V)]<br>a Carousell Group company
+            </p>
             <USeparator
               orientation="vertical"
               class="h-auto self-stretch"
@@ -275,7 +302,7 @@ const disclaimerModal = ref(!acknowledged.value)
               <ULink
                 :to="redirectUrl"
                 target="_blank"
-                class="text-xs font-semibold"
+                class="text-xs"
               >
                 {{ label }}
               </ULink>
