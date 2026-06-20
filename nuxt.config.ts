@@ -96,7 +96,8 @@ export default defineNuxtConfig({
   },
 
   supabase: {
-    redirect: false
+    redirect: false,
+    types: new URL('./app/types/database.types.ts', import.meta.url).pathname
   }
 
 })

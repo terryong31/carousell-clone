@@ -8,7 +8,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "db:types": "supabase gen types typescript --linked > app/types/database.types.ts",
+    "db:pull": "supabase db pull"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.102",
