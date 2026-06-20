@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "db:types": "supabase gen types typescript --linked > app/types/database.types.ts",
-    "db:pull": "supabase db pull"
+    "db:pull": "supabase db pull",
+    "security:check": "bun audit --audit-level critical"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.102",
@@ -23,8 +24,9 @@
     "@vercel/speed-insights": "^2.0.0",
     "better-sqlite3": "^12.9.0",
     "browser-image-compression": "^2.0.2",
-    "nuxt": "^4.4.2",
+    "nuxt": "^4.4.8",
     "tailwindcss": "^4.2.2",
+    "vite": "^8.0.16",
     "vuedraggable": "^4.1.0",
     "zod": "^4.4.2"
   },
@@ -36,5 +38,10 @@
     "typescript": "^6.0.2",
     "vue-tsc": "^3.2.6"
   },
-  "packageManager": "bun@latest"
+  "packageManager": "bun@latest",
+  "overrides": {
+    "shell-quote": ">=1.8.4",
+    "ws": ">=8.21.0",
+    "simple-git": ">=3.36.0"
+  }
 }

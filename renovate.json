@@ -1,13 +1,21 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>nuxt/renovate-config-nuxt"
+    "config:best-practices",
+    "github>nuxt/renovate-config-nuxt",
+    "group:allNonMajor"
   ],
+  "dependencyDashboard": true,
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
   "lockFileMaintenance": {
     "enabled": true
   },
-  "packageRules": [{
-    "matchDepTypes": ["resolutions"],
-    "enabled": false
-  }],
-  "postUpdateOptions": ["pnpmDedupe"]
+  "packageRules": [
+    {
+      "matchDepTypes": ["resolutions"],
+      "enabled": false
+    }
+  ]
 }
