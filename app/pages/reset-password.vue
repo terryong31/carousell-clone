@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { passwordResetSchema } from '~/utils/auth'
 
 const { resetPassword } = useAuth()
 

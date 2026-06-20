@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { registerSchema } from '~/utils/auth'
 
 const { signUp } = useAuth()
 
