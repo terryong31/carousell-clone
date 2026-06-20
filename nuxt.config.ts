@@ -2,10 +2,12 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
+    '@nuxt/image',
     '@nuxt/ui',
     '@nuxtjs/supabase',
     '@vercel/analytics',
-    '@vercel/speed-insights'
+    '@vercel/speed-insights',
+    '@pinia/nuxt'
     // '@nuxt/content'
   ],
 
@@ -49,7 +51,23 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   routeRules: {
-    '/': { prerender: true }
+    // Static marketing pages — built once at deploy, served as static HTML
+    '/about': { prerender: true },
+    '/contact': { prerender: true },
+
+    // Public, SEO-critical, cacheable — rendered on demand then cached at the
+    // edge and revalidated after the TTL (seconds). Native ISR on Vercel.
+    '/': { isr: 60 }, // home shows live "Recommended" — short cache stays fresh
+    '/p/**': { isr: 3600 }, // product pages — revalidate hourly
+    '/u/**': { isr: 3600 }, // public profiles
+
+    // Auth-gated / personalized — no SEO value, render on the client only
+    '/sell': { ssr: false },
+    '/forgot-password': { ssr: false },
+    '/reset-password': { ssr: false },
+    '/confirm': { ssr: false }
+
+    // /shop and /search have no rule — they inherit the global ssr: true default
   },
 
   compatibilityDate: '2025-01-15',
@@ -62,7 +80,8 @@ export default defineNuxtConfig({
       include: [
         '@vue/devtools-core',
         '@vue/devtools-kit',
-        'zod'
+        'zod',
+        'vuedraggable'
       ]
     }
   },

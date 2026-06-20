@@ -3,7 +3,8 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 import { faqItems } from '../../constants/faq'
 
 definePageMeta({
-  showSearch: true
+  showSearch: true,
+  showFooter: true
 })
 
 const breadcrumb = ref<Array<BreadcrumbItem>>([
@@ -171,7 +172,8 @@ const searchQueries = [
   'jil sander',
   'ax jeans',
   'seluar punk',
-  'mossimo', 'rrl',
+  'mossimo',
+  'rrl',
   'lee 101',
   'makita drill cordless',
   'nike raincoat',
@@ -236,11 +238,11 @@ useSeoMeta({
           }"
           class="w-full"
         >
-          <img
+          <NuxtImg
             :src="item"
             class="w-full aspect-[16/13] object-cover"
             loading="lazy"
-          >
+          />
         </UCarousel>
       </div>
       <div class="flex gap-4">
@@ -615,10 +617,11 @@ useSeoMeta({
             </div>
           </div>
           <div class="pt-6">
-            <img
+            <NuxtImg
               src="https://sl3-cdn.karousell.com/components/bp_ldp_promo_banner_V001_dweb_en.svg"
               alt="buyer_protection_notice.svg"
-            >
+              class="w-full"
+            />
           </div>
         </div>
         <div class="ml-auto w-[350px] shrink-0">
@@ -686,26 +689,26 @@ useSeoMeta({
                 </div>
                 <div class="py-2">
                   <div class="flex gap-2">
-                    <img
+                    <NuxtImg
                       src="/visa.svg"
-                      class="h-6 w-12 border border-neutral-200 dark:border-neutral-800 rounded bg-white px-1 py-0.5 object-contain"
+                      class="h-6 w-10 rounded object-contain"
                       alt="Visa"
-                    >
-                    <img
+                    />
+                    <NuxtImg
                       src="/mastercard.svg"
-                      class="h-6 w-12 border border-neutral-200 dark:border-neutral-800 rounded bg-white px-1 py-0.5 object-contain"
+                      class="h-6 w-10 rounded object-contain"
                       alt="Mastercard"
-                    >
-                    <img
+                    />
+                    <NuxtImg
                       src="/fpx.svg"
-                      class="h-6 w-12 border border-neutral-200 dark:border-neutral-800 rounded bg-white px-1 py-0.5 object-contain"
+                      class="h-6 w-10 rounded object-contain"
                       alt="FPX"
-                    >
-                    <img
+                    />
+                    <NuxtImg
                       src="/grabpay.svg"
-                      class="h-6 w-12 border border-neutral-200 dark:border-neutral-800 rounded bg-white px-1 py-0.5 object-contain"
+                      class="h-6 w-10 rounded object-contain"
                       alt="GrabPay"
-                    >
+                    />
                   </div>
                 </div>
                 <p class="text-sm">

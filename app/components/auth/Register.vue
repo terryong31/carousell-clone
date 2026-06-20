@@ -9,18 +9,13 @@ const isLoginOpen = useState('auth-login-modal', () => false)
 
 const isRegisterOpen = useState('auth-register-modal', () => false)
 
-const state = reactive<Partial<RegisterSchema>>({
-  email: undefined,
-  password: undefined
-})
-
 const loading = ref(false)
 
-async function onRegisterSubmit(_event: FormSubmitEvent<RegisterSchema>) {
-  if (state.email && state.password && state.name) {
+async function onRegisterSubmit(event: FormSubmitEvent<RegisterSchema>) {
+  if (event.data.email && event.data.password && event.data.name) {
     loading.value = true
     try {
-      const { data, error } = await signUp(state.email, state.password, state.name)
+      const { data, error } = await signUp(event.data.email, event.data.password, event.data.name)
       if (error) {
         toast.add({ title: 'Register Failed', description: '' + error, color: 'error' })
         return
@@ -41,6 +36,23 @@ const props = withDefaults(defineProps<{
 }>(), {
   label: 'Register'
 })
+
+const fields = [{
+  name: 'name',
+  type: 'text',
+  label: 'Display Name',
+  placeholder: 'Enter your display name'
+}, {
+  name: 'email',
+  type: 'email',
+  label: 'Email',
+  placeholder: 'Enter your email'
+}, {
+  name: 'password',
+  label: 'Password',
+  type: 'password',
+  placeholder: 'Enter your password'
+}]
 </script>
 
 <template>
@@ -62,61 +74,28 @@ const props = withDefaults(defineProps<{
     </template>
 
     <template #body>
-      <div class="w-full text-center pb-4 text-xl font-bold">
-        Create acoount
-      </div>
-
-      <UForm
-        id="register-form"
+      <UAuthForm
+        :fields="fields"
         :schema="registerSchema"
-        :state="state"
-        class="space-y-4"
+        :loading="loading"
+        title="Create account"
+        align="top"
         @submit="onRegisterSubmit"
       >
-        <UFormField
-          label="Display Name"
-          name="name"
-        >
-          <UInput
-            v-model="state.name"
-            class="w-full"
-          />
-        </UFormField>
-
-        <UFormField
-          label="Email"
-          name="email"
-        >
-          <UInput
-            v-model="state.email"
-            class="w-full"
-          />
-        </UFormField>
-
-        <UFormField
-          label="Password"
-          name="password"
-          class="w-full"
-        >
-          <UInput
-            v-model="state.password"
-            type="password"
-            class="w-full"
-          />
-        </UFormField>
-        <div class="text-sm text-justify">
-          To ensure a safe community, Carousellers have to verify their email. A verification email will be sent to your inbox.
-        </div>
-        <div>
+        <template #submit-button>
           <UButton
             :loading="loading"
             type="submit"
             label="Sign up"
-            form="register-form"
             class="w-full justify-center"
           />
-        </div>
-      </UForm>
+        </template>
+        <template #validation>
+          <div class="text-sm">
+            To ensure a safe community, Carousellers have to verify their email. A verification email will be sent to your inbox.
+          </div>
+        </template>
+      </UAuthForm>
     </template>
 
     <template #footer>

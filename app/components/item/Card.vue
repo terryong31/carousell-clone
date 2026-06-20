@@ -40,10 +40,10 @@ const products = Array.from({ length: 8 }, (_, i) => ({
           </div>
         </template>
 
-        <img
+        <NuxtImg
           src="/shrek.webp"
           class="w-full aspect-[1/1] rounded-md object-cover"
-        >
+        />
 
         <template #footer>
           <p>{{ product.name }}</p>
