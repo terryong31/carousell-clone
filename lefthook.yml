@@ -1,9 +1,47 @@
+# ── commit-msg ────────────────────────────────────────────────────────────────
+# Validates the commit subject line before the commit is recorded.
+commit-msg:
+  commands:
+    validate:
+      run: |
+        MSG=$(head -1 {1})
+        # Skip auto-generated subjects (merge, revert, fixup, squash)
+        case "$MSG" in
+          Merge\ *|Revert\ *|fixup\!*|squash\!*) exit 0 ;;
+        esac
+        if [ ${#MSG} -gt 100 ]; then
+          echo "✖  commit subject is ${#MSG} chars — max is 100"
+          exit 1
+        fi
+        if echo "$MSG" | grep -qE '^[[:upper:]]'; then
+          echo "✖  commit subject must start with a lowercase letter (use conventional commits: feat/fix/chore/…)"
+          exit 1
+        fi
+
+# ── pre-commit ────────────────────────────────────────────────────────────────
+# Fast, scoped checks on staged file types. Runs in parallel.
+# Note: lint enforces both code quality and formatting (ESLint @stylistic).
+# Security: Dependabot owns the full vulnerability gate; this catches critical-only.
 pre-commit:
   parallel: true
   commands:
     lint:
-      glob: "*.{js,ts,vue}"
+      glob: "*.{js,ts,vue,mjs,cjs}"
       run: bun run lint
     typecheck:
       glob: "*.{js,ts,vue}"
       run: bun run typecheck
+    security:
+      run: bun run security:check
+
+# ── pre-push ──────────────────────────────────────────────────────────────────
+# Full suite with no glob filtering — catches issues across all files.
+pre-push:
+  parallel: true
+  commands:
+    lint:
+      run: bun run lint
+    typecheck:
+      run: bun run typecheck
+    security:
+      run: bun run security:check

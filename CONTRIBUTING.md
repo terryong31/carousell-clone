@@ -10,42 +10,72 @@ Thank you for your interest in contributing to the Carousell Clone! We welcome c
    bun install
    ```
 3. Set up your `.env` file based on `.env.example`.
-4. Create a new branch for your feature/bugfix:
+
+## Issue First, Code Second
+
+**Every change must start with a GitHub issue.** No code should be written without a linked issue.
+
+1. Check [existing issues](https://github.com/terryong31/carousell-clone/issues) to avoid duplicates.
+2. Open a new issue (use the appropriate template — bug report or feature request).
+3. Get the issue assigned or acknowledged before branching.
+4. Create a branch tied to the issue:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feat/your-feature-name
    ```
 
 ## Commit Conventions
 
-We follow Conventional Commits format for our commit messages:
+We follow [Conventional Commits](https://www.conventionalcommits.org/) format.
 
-- `feat:` for new features
-- `fix:` for bug fixes
-- `docs:` for documentation updates
-- `chore:` for maintenance tasks
-- `refactor:` for code refactoring
+| Type | When to use |
+|---|---|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `docs:` | Documentation only |
+| `chore:` | Maintenance, deps, config |
+| `refactor:` | Code change with no behaviour change |
+
+**Rules enforced by the commit-msg hook:**
+- Subject line must **start with lowercase**
+- Subject line must be **≤ 100 characters**
+- Merge, revert, fixup, and squash commits are exempt
 
 Example: `feat(web): add image upload to sell page`
 
-## Pre-Commit Checks
+## Git Workflow
 
-This project uses **Lefthook** to manage git hooks. When you run `git commit`, Lefthook will automatically run:
+**Never push directly to `main`.** Always:
 
-- Linting (`bun run lint`)
-- Typechecking (`bun run typecheck`)
+```bash
+git checkout -b feat/your-feature-name
+# make changes, commit
+git push -u origin feat/your-feature-name
+gh pr create
+```
 
-Please ensure these pass before pushing your code. You can run them manually with:
+## Pre-Commit & Pre-Push Checks
+
+This project uses **Lefthook** to run quality gates automatically.
+
+| Hook | Checks |
+|---|---|
+| `commit-msg` | Commit subject format |
+| `pre-commit` | Lint, typecheck, security (staged files only) |
+| `pre-push` | Lint, typecheck, security (full codebase) |
+
+Run them manually:
 
 ```bash
 bun run lint
 bun run typecheck
+bun run security:check
 ```
 
 ## Pull Requests
 
-- Keep your PRs small and focused (preferably max 10 files and max 350 LOC).
-- If your PR is large (>15 files or >300 LOC), please break it down into smaller PRs and create a plan document in `.agents/plans/`.
-- Ensure all CI tests pass.
+- Keep PRs small and focused — max **10 files** and **350 LOC**.
+- If your PR is large (>10 files or >300 LOC), break it down and create a plan in `.agents/plans/`.
+- Ensure all CI checks pass before requesting review.
 - Fill out the PR template completely.
 
 ## Code Style
