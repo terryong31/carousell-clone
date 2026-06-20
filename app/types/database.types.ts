@@ -39,6 +39,83 @@ export type Database = {
   }
   public: {
     Tables: {
+      items: {
+        Row: {
+          accept_offer: boolean | null
+          brand: string | null
+          buyer_protection: boolean | null
+          category: string
+          condition: string | null
+          created_at: string | null
+          deal_east_malaysia: boolean | null
+          deal_meetup: boolean | null
+          deal_west_malaysia: boolean | null
+          description: string | null
+          free_shipping: boolean | null
+          id: string
+          images: string[]
+          price: number
+          seller_id: string
+          size: string | null
+          slug: string
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          accept_offer?: boolean | null
+          brand?: string | null
+          buyer_protection?: boolean | null
+          category: string
+          condition?: string | null
+          created_at?: string | null
+          deal_east_malaysia?: boolean | null
+          deal_meetup?: boolean | null
+          deal_west_malaysia?: boolean | null
+          description?: string | null
+          free_shipping?: boolean | null
+          id?: string
+          images?: string[]
+          price: number
+          seller_id: string
+          size?: string | null
+          slug?: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          accept_offer?: boolean | null
+          brand?: string | null
+          buyer_protection?: boolean | null
+          category?: string
+          condition?: string | null
+          created_at?: string | null
+          deal_east_malaysia?: boolean | null
+          deal_meetup?: boolean | null
+          deal_west_malaysia?: boolean | null
+          description?: string | null
+          free_shipping?: boolean | null
+          id?: string
+          images?: string[]
+          price?: number
+          seller_id?: string
+          size?: string | null
+          slug?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "items_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null

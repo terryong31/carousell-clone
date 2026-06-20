@@ -7,81 +7,34 @@ definePageMeta({
   showFooter: true
 })
 
+const route = useRoute()
+const { fetchItem } = useItems()
+const { data: listingItem } = await fetchItem(route.params.slug as string)
+
 const breadcrumb = ref<Array<BreadcrumbItem>>([
-  {
-    label: 'Home'
-  },
-  {
-    label: 'Men\'s Fashion'
-  },
-  {
-    label: 'Bottoms'
-  },
-  {
-    label: 'Jeans'
-  }
+  { label: 'Home' },
+  { label: 'Men\'s Fashion' },
+  { label: 'Bottoms' },
+  { label: 'Jeans' }
 ])
 
-const itemData = {
-  id: 'blablabla',
-  images: [
-    'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_262a3a21_progressive.jpg',
-    'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_c476b452_progressive.jpg',
-    'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_5ff5e902_progressive.jpg',
-    'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_5ff5e902_progressive.jpg',
-    'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_61360e17_progressive.jpg',
-    'https://media.karousell.com/media/photos/products/2026/6/10/uniqlo_selvedge_men_regular_st_1781100941_f18dab7e_progressive.jpg'
-  ],
-  name: 'UNIQLO Selvedge Men Regular Straight Fit Jeans. Waist 29. Fabric by Kaihara Japan',
-  price: '69',
-  buyerProtection: true,
-  freeShipping: true,
-  acceptOffer: true,
-  likeCount: 7,
-  details: {
-    condition: 'Well used',
-    size: 'Others',
-    category: 'Jeans',
-    brand: 'Uniqlo',
-    timeListed: Date.now()
-  },
-  description: '* Harga termasuk pos untuk Semenanjung Malaysia.\n* Original & terpakai.\n* Fabric by Kaihara Japan.\n* Saiz : 29 - ukuran manual & saiz di tag adalah. \n* Length : 41".\n* Rise : 11.5".\n* Hip : 20.5".\n* Thigh : 11.5".\n* Leg opening : 7".\n* Material : 100% cotton.\n* Condition : 9/10 - jahitan semula yang kemas di peha kanan.',
-  userFullName: 'Terry Ong',
+// seller section remains hardcoded until reviews table is implemented (#9)
+const seller = {
+  fullName: 'Terry Ong',
   userName: '@terryong30',
-  userPicUrl: 'https://i.pravatar.cc/150?u=john-doe',
-  userRating: 4.5,
-  userReviews: 503,
-  deal: {
-    westMalaysia: {
-      method: 'Custom',
-      daysToArrive: '3-5 days',
-      cost: 0,
-      tracked: true
-    },
-    eastMalaysia: {
-      method: 'Custom',
-      daysToArrive: '3-5 days',
-      cost: 15.00,
-      tracked: true
-    },
-    meetUp: {
-      locationName: 'U.n.i Clinic KLTS',
-      locationUrl: 'https://maps.app.goo.gl/xFeast1tNAKUZo2X6',
-      cost: 0
-    }
-  }
+  picUrl: 'https://i.pravatar.cc/150?u=john-doe',
+  rating: 4.5,
+  reviews: 503
 }
 
 const isDescriptionExpanded = ref(false)
 
+const description = computed(() => listingItem.value?.description ?? '')
+
 const displayedDescription = computed(() => {
-  if (isDescriptionExpanded.value) {
-    return itemData.description
-  }
-  const lines = itemData.description.split('\n')
-  if (lines.length <= 4) {
-    return itemData.description
-  }
+  if (isDescriptionExpanded.value) return description.value
+  const lines = description.value.split('\n')
+  if (lines.length <= 4) return description.value
   const collapsedLines = lines.slice(0, 4)
   const lastLine = collapsedLines[3]
   if (lastLine !== undefined) {
@@ -93,38 +46,59 @@ const displayedDescription = computed(() => {
 const isDealMethodsExpanded = ref(false)
 
 const dealMethods = computed(() => {
-  return [
-    {
+  if (!listingItem.value) return []
+  const methods = []
+  if (listingItem.value.deal_west_malaysia) {
+    methods.push({
       type: 'shipping',
-      name: `${itemData.deal.westMalaysia.method} (West Malaysia)`,
-      cost: itemData.deal.westMalaysia.cost,
-      daysToArrive: itemData.deal.westMalaysia.daysToArrive,
-      tracked: itemData.deal.westMalaysia.tracked
-    },
-    {
+      name: 'Shipping (West Malaysia)',
+      cost: listingItem.value.free_shipping ? 0 : null,
+      daysToArrive: '3-5 days',
+      tracked: true,
+      locationName: null,
+      locationUrl: null
+    })
+  }
+  if (listingItem.value.deal_east_malaysia) {
+    methods.push({
       type: 'shipping',
-      name: `${itemData.deal.eastMalaysia.method} (East Malaysia)`,
-      cost: itemData.deal.eastMalaysia.cost,
-      daysToArrive: itemData.deal.eastMalaysia.daysToArrive,
-      tracked: itemData.deal.eastMalaysia.tracked
-    },
-    {
+      name: 'Shipping (East Malaysia)',
+      cost: null,
+      daysToArrive: '5-7 days',
+      tracked: true,
+      locationName: null,
+      locationUrl: null
+    })
+  }
+  if (listingItem.value.deal_meetup) {
+    methods.push({
       type: 'meetup',
       name: 'Meet-up',
-      cost: itemData.deal.meetUp.cost,
-      locationName: itemData.deal.meetUp.locationName,
-      locationUrl: itemData.deal.meetUp.locationUrl
-    }
-  ]
+      cost: 0,
+      daysToArrive: null,
+      tracked: false,
+      locationName: null,
+      locationUrl: null
+    })
+  }
+  return methods
 })
 
 const displayedDealMethods = computed(() => {
-  if (isDealMethodsExpanded.value) {
-    return dealMethods.value
-  }
+  if (isDealMethodsExpanded.value) return dealMethods.value
   const first = dealMethods.value[0]
   return first ? [first] : []
 })
+
+const itemDetails = computed(() => ({
+  condition: listingItem.value?.condition ?? '—',
+  size: listingItem.value?.size ?? '—',
+  category: listingItem.value?.category ?? '—',
+  brand: listingItem.value?.brand ?? '—',
+  timeListed: listingItem.value?.created_at
+    ? new Date(listingItem.value.created_at).toLocaleDateString('en-MY', { year: 'numeric', month: 'short', day: 'numeric' })
+    : '—'
+}))
 
 const sellerReviewsList = [
   {
@@ -132,7 +106,7 @@ const sellerReviewsList = [
     avatar: 'https://i.pravatar.cc/150?img=11',
     timeAgo: '13 days ago',
     rating: 5,
-    comment: 'Legit seller. Item kualiti 🫡 Mantap !',
+    comment: 'Legit seller. Item kualiti Mantap !',
     product: {
       name: 'Hanes Beefy-T White Unisex Heavyweight Cotton T-shirt. Size M',
       price: '45',
@@ -183,7 +157,7 @@ const searchQueries = [
 ]
 
 useSeoMeta({
-  title: itemData.name
+  title: listingItem.value?.title
 })
 </script>
 
@@ -204,7 +178,7 @@ useSeoMeta({
             }"
           />
           <UButton
-            :label="`${itemData.likeCount} Likes`"
+            :label="`${0} Likes`"
             icon="i-lucide-heart"
             :ui="{
               base: 'bg-white text-black dark:bg-gray-800 dark:text-white'
@@ -213,7 +187,7 @@ useSeoMeta({
         </div>
         <div class="absolute bottom-2 right-2 z-10 flex gap-2">
           <UButton
-            :label="`${itemData.images.length} Images`"
+            :label="`${(listingItem?.images ?? []).length} Images`"
             icon="i-lucide-image"
             :ui="{
               base: 'bg-white text-black dark:bg-gray-800 dark:text-white'
@@ -224,7 +198,7 @@ useSeoMeta({
           v-slot="{ item }"
           :align="'start'"
           arrows
-          :items="itemData.images"
+          :items="listingItem?.images ?? []"
           loop
           wheel-gestures
           prev-icon="i-lucide-chevron-left"
@@ -249,20 +223,20 @@ useSeoMeta({
         <div class="flex-1 min-w-0 flex flex-col gap-4">
           <div>
             <UButton
-              v-if="itemData.buyerProtection"
+              v-if="listingItem?.buyer_protection"
               label="Buyer Protection"
               color="neutral"
               class="pointer-events-none cursor-default"
             />
           </div>
           <div>
-            <h1>{{ itemData.name }}</h1>
+            <h1>{{ listingItem?.title }}</h1>
           </div>
           <div>
-            <h1>RM{{ itemData.price }}</h1>
+            <h1>RM{{ listingItem?.price }}</h1>
           </div>
           <div
-            v-if="itemData.freeShipping"
+            v-if="listingItem?.free_shipping"
             class="flex gap-2"
           >
             <div class="flex justify-center items-center">
@@ -274,7 +248,7 @@ useSeoMeta({
             <div>Free Shipping</div>
           </div>
           <div class="flex gap-2">
-            <div v-if="itemData.acceptOffer">
+            <div v-if="listingItem?.accept_offer">
               <UButton
                 label="Make Offer"
                 variant="outline"
@@ -302,7 +276,7 @@ useSeoMeta({
             <h2>Details</h2>
             <div class="flex flex-wrap">
               <div
-                v-for="detail, category in itemData.details"
+                v-for="(detail, category) in itemDetails"
                 :key="category"
                 class="w-1/2 py-3"
               >
@@ -343,7 +317,7 @@ useSeoMeta({
             <div class="whitespace-pre-line pt-3">
               <p>{{ displayedDescription }}</p>
               <button
-                v-if="itemData.description.split('\n').length > 4"
+                v-if="description.split('\n').length > 4"
                 class="text-green-600 dark:text-green-500 font-semibold cursor-pointer block focus:outline-none"
                 @click="isDescriptionExpanded = !isDescriptionExpanded"
               >
@@ -371,7 +345,7 @@ useSeoMeta({
                     {{ method.name }}
                   </p>
                   <p class="font-semibold text-neutral-900 dark:text-white">
-                    {{ method.cost === 0 ? 'Free' : `RM${method.cost.toFixed(2)}` }}
+                    {{ method.cost == null ? '—' : method.cost === 0 ? 'Free' : `RM${method.cost.toFixed(2)}` }}
                   </p>
                 </div>
 
@@ -390,7 +364,7 @@ useSeoMeta({
                   class="pt-2 pb-6"
                 >
                   <ULink
-                    :to="method.locationUrl"
+                    :to="method.locationUrl ?? undefined"
                     target="_blank"
                     class="text-green-600 dark:text-green-500 text-sm underline hover:underline font-semibold"
                   >
@@ -458,11 +432,11 @@ useSeoMeta({
               >
                 <div class="flex items-center gap-3">
                   <UAvatar
-                    :src="itemData.userPicUrl"
+                    :src="seller.picUrl"
                     size="3xl"
                   />
                   <div class="flex flex-col">
-                    <span class="font-bold text-neutral-900 dark:text-white">{{ itemData.userFullName }}</span>
+                    <span class="font-bold text-neutral-900 dark:text-white">{{ seller.fullName }}</span>
                     <ULink class="text-sm text-neutral-500 hover:text-neutral-500 flex items-center gap-0.5 mt-0.5">
                       Profile details
                       <UIcon
@@ -477,7 +451,7 @@ useSeoMeta({
                   <div class="flex flex-col items-center justify-center gap-1">
                     <div class="flex items-center gap-0.5">
                       <span class="font-bold text-sm text-neutral-900 dark:text-white">
-                        {{ itemData.userRating.toFixed(1) }}
+                        {{ seller.rating.toFixed(1) }}
                       </span>
                       <UIcon
                         name="i-material-symbols-star"
@@ -485,7 +459,7 @@ useSeoMeta({
                       />
                     </div>
                     <span class="text-xs text-neutral-500 dark:text-neutral-400">
-                      {{ itemData.userReviews }} reviews
+                      {{ seller.reviews }} reviews
                     </span>
                   </div>
 
@@ -527,10 +501,10 @@ useSeoMeta({
             <div class="flex-1 flex flex-col min-w-0 gap-6">
               <div class="flex items-center gap-2">
                 <h2 class="text-lg font-bold text-neutral-900 dark:text-white">
-                  Reviews for {{ itemData.userFullName }}
+                  Reviews for {{ seller.fullName }}
                 </h2>
                 <span class="text-sm text-neutral-500 dark:text-neutral-400 font-semibold">
-                  {{ itemData.userRating.toFixed(1) }}
+                  {{ seller.rating.toFixed(1) }}
                 </span>
                 <div class="flex items-center gap-0.5">
                   <UIcon
@@ -541,7 +515,7 @@ useSeoMeta({
                   />
                 </div>
                 <span class="text-sm text-neutral-500 dark:text-neutral-400 font-semibold">
-                  ({{ itemData.userReviews }})
+                  ({{ seller.reviews }})
                 </span>
               </div>
 
@@ -631,25 +605,25 @@ useSeoMeta({
             <div class="flex flex-col px-6 py-4 gap-6">
               <div>
                 <UUser
-                  :name="`${itemData.userFullName} ${itemData.userName}`"
-                  :avatar="{ src: itemData.userPicUrl }"
+                  :name="`${seller.fullName} ${seller.userName}`"
+                  :avatar="{ src: seller.picUrl }"
                   size="xl"
                 >
                   <template #description>
                     <div class="flex items-center gap-1 text-xs">
-                      <span>{{ itemData.userRating }}</span>
+                      <span>{{ seller.rating }}</span>
                       <div class="flex items-center">
                         <UIcon
                           v-for="star in 5"
                           :key="star"
-                          :name="star <= Math.floor(Math.round(itemData.userRating * 2) / 2)
+                          :name="star <= Math.floor(Math.round(seller.rating * 2) / 2)
                             ? 'i-material-symbols-star'
-                            : (star - 0.5 <= Math.round(itemData.userRating * 2) / 2 ? 'i-material-symbols-star-half' : 'i-material-symbols-star-outline')"
+                            : (star - 0.5 <= Math.round(seller.rating * 2) / 2 ? 'i-material-symbols-star-half' : 'i-material-symbols-star-outline')"
                           class="size-3.5"
-                          :class="star - 0.5 <= Math.round(itemData.userRating * 2) / 2 ? 'text-green-600' : 'text-neutral-300 dark:text-neutral-700'"
+                          :class="star - 0.5 <= Math.round(seller.rating * 2) / 2 ? 'text-green-600' : 'text-neutral-300 dark:text-neutral-700'"
                         />
                       </div>
-                      <span>({{ itemData.userReviews }} reviews)</span>
+                      <span>({{ seller.reviews }} reviews)</span>
                     </div>
                   </template>
                 </UUser>
@@ -671,7 +645,7 @@ useSeoMeta({
                 </div>
                 <div class="pt-2">
                   <p class="text-sm">
-                    Eligible for return/refund if the item doesn’t arrive, is damaged during delivery, or is not as described. <ULink
+                    Eligible for return/refund if the item doesn't arrive, is damaged during delivery, or is not as described. <ULink
                       to="/policy/returns"
                       class="text-green-600 hover:text-green-600"
                     >Learn more</ULink>
