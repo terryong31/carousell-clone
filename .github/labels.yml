@@ -1,0 +1,115 @@
+# GitHub Labels
+# Sync with: npx github-label-sync --access-token <token> --labels .github/labels.yml terryong31/carousell-clone
+# Docs: https://github.com/nicedoc/github-label-sync
+
+# ── Type ─────────────────────────────────────────────────────────────────────
+
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "type: feature"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "type: enhancement"
+  color: "84b6eb"
+  description: "Improvement to an existing feature"
+
+- name: "type: refactor"
+  color: "e4e669"
+  description: "Code change that neither fixes a bug nor adds a feature"
+
+- name: "type: docs"
+  color: "0075ca"
+  description: "Improvements or additions to documentation"
+
+- name: "type: test"
+  color: "bfd4f2"
+  description: "Adding or updating tests"
+
+- name: "type: chore"
+  color: "ffffff"
+  description: "Maintenance tasks, dependency bumps, config changes"
+
+- name: "type: security"
+  color: "e11d48"
+  description: "Security vulnerability or hardening"
+
+# ── Sector ────────────────────────────────────────────────────────────────────
+
+- name: "sector: web"
+  color: "7c3aed"
+  description: "Frontend / Nuxt pages, components, layouts"
+
+- name: "sector: api"
+  color: "2563eb"
+  description: "Nuxt server routes, API endpoints"
+
+- name: "sector: db"
+  color: "059669"
+  description: "Database schema, migrations, RLS policies, triggers"
+
+- name: "sector: auth"
+  color: "d97706"
+  description: "Authentication and authorisation (Supabase Auth)"
+
+- name: "sector: infra"
+  color: "64748b"
+  description: "Hosting, deployment, Vercel config, environment"
+
+- name: "sector: ci"
+  color: "0ea5e9"
+  description: "CI/CD pipelines, GitHub Actions workflows"
+
+- name: "sector: docs"
+  color: "475569"
+  description: "ADRs, READMEs, architecture docs"
+
+- name: "sector: perf"
+  color: "f59e0b"
+  description: "Performance — rendering, caching, bundle size"
+
+- name: "sector: dx"
+  color: "8b5cf6"
+  description: "Developer experience — tooling, linting, typegen"
+
+# ── Priority ─────────────────────────────────────────────────────────────────
+
+- name: "priority: critical"
+  color: "b91c1c"
+  description: "P0 — production down or data loss; drop everything"
+
+- name: "priority: high"
+  color: "dc2626"
+  description: "P1 — blocks a release or other work; do next"
+
+- name: "priority: medium"
+  color: "ea580c"
+  description: "P2 — important but not blocking; schedule soon"
+
+- name: "priority: low"
+  color: "ca8a04"
+  description: "P3 — nice-to-have; do when capacity allows"
+
+# ── Status ────────────────────────────────────────────────────────────────────
+
+- name: "status: in progress"
+  color: "3b82f6"
+  description: "Actively being worked on"
+
+- name: "status: blocked"
+  color: "9ca3af"
+  description: "Cannot proceed — waiting on something external"
+
+- name: "status: needs review"
+  color: "6366f1"
+  description: "PR or design ready for review"
+
+- name: "status: wontfix"
+  color: "6b7280"
+  description: "Acknowledged but will not be addressed"
+
+- name: "status: duplicate"
+  color: "d1d5db"
+  description: "Already reported elsewhere"
