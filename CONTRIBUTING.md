@@ -10,9 +10,17 @@ Thank you for your interest in contributing to the Carousell Clone! We welcome c
    bun install
    ```
 3. Set up your `.env` file based on `.env.example`.
-4. Create a new branch for your feature/bugfix:
+
+## Issue First, Code Second
+
+**Every change must start with a GitHub issue.** No code should be written without a linked issue.
+
+1. Check [existing issues](https://github.com/terryong31/carousell-clone/issues) to avoid duplicates.
+2. Open a new issue (use the appropriate template — bug report or feature request).
+3. Get the issue assigned or acknowledged before branching.
+4. Create a branch tied to the issue:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feat/your-feature-name
    ```
 
 ## Commit Conventions

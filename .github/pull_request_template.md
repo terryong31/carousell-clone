@@ -1,17 +1,37 @@
-## Describe your changes
+## Summary
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context.
+<!-- One or two sentences. What does this PR do and why? -->
 
-## Type of change
+Closes #<!-- issue number -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+## Type
 
-## Checklist before requesting a review
+<!-- Matches your conventional commit type — delete all that don't apply -->
+- [ ] `feat` — new feature
+- [ ] `fix` — bug fix
+- [ ] `chore` — maintenance / config / deps
+- [ ] `refactor` — no behaviour change
+- [ ] `docs` — documentation only
 
-- [ ] I have performed a self-review of my code
-- [ ] I have run `bun run lint` and `bun run typecheck`
-- [ ] My changes generate no new warnings
-- [ ] I have added/updated necessary documentation
+## Changes
+
+<!-- Bullet list of what changed. Keep it scannable. -->
+-
+-
+
+## Screenshots / recordings
+
+<!-- Required for any UI change. Delete if backend/infra only. -->
+| Before | After |
+|--------|-------|
+|        |       |
+
+## Checklist
+
+- [ ] Self-reviewed the diff
+- [ ] Closes the linked issue (or explains why not)
+- [ ] PR is ≤ 10 files and ≤ 350 LOC (or a restructuring plan exists in `.agents/plans/`)
+- [ ] Lefthook pre-push passed locally (`lint` + `typecheck` + `security:check`)
+- [ ] No new `console.log` / debug code left in
+- [ ] DB migrations included if schema changed (`supabase/migrations/`)
+- [ ] `bun run db:types` re-run if Supabase schema changed
