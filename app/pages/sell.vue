@@ -15,7 +15,7 @@ onUnmounted(() => {
   showSellHeader.value = false
 })
 
-const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
+const _items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
 </script>
 
 <template>
@@ -101,7 +101,6 @@ const items = ref(['Backlog', 'Todo', 'In Progress', 'Done'])
           <UFormField>
             <USelectMenu
               placeholder="Select a Category"
-              :items="items"
               class="w-full"
             />
           </UFormField>

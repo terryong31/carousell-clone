@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as locales from '@nuxt/ui/locale'
 
-import { categories } from '~/constants/categories'
+import { categories } from '~/constants/header-categories'
 
 const showSellHeader = useState('showSellHeader')
 
