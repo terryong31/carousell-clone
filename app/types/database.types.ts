@@ -39,6 +39,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          label: string
+          parent_slug: string | null
+          slug: string
+          sort_order: number | null
+        }
+        Insert: {
+          label: string
+          parent_slug?: string | null
+          slug: string
+          sort_order?: number | null
+        }
+        Update: {
+          label?: string
+          parent_slug?: string | null
+          slug?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_slug_fkey"
+            columns: ["parent_slug"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       items: {
         Row: {
           accept_offer: boolean | null
