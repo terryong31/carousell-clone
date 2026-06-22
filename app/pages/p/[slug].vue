@@ -8,8 +8,57 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { fetchItem } = useItems()
+const { fetchItem, fetchItems, PAGE_SIZE } = useItems()
 const { data: listingItem } = await fetchItem(route.params.slug as string)
+
+// Likes
+const user = useSupabaseUser()
+const isLoginOpen = useState('auth-login-modal', () => false)
+const { toggleLike, fetchLikedIds } = useLikes()
+const likeCount = ref(listingItem.value?.likes[0]?.count ?? 0)
+const liked = ref(false)
+
+// Resolve liked state on the client, and re-resolve when the user logs in/out
+watch(() => user.value?.id, async (id) => {
+  if (!id || !listingItem.value) {
+    liked.value = false
+    return
+  }
+  const ids = await fetchLikedIds([listingItem.value.id])
+  liked.value = ids.has(listingItem.value.id)
+}, { immediate: true })
+
+async function toggleProductLike() {
+  if (!user.value) {
+    isLoginOpen.value = true
+    return
+  }
+  if (!listingItem.value) return
+  const wasLiked = liked.value
+  liked.value = !wasLiked
+  likeCount.value += wasLiked ? -1 : 1
+  try {
+    await toggleLike(listingItem.value.id, wasLiked)
+  } catch {
+    liked.value = wasLiked
+    likeCount.value += wasLiked ? 1 : -1
+  }
+}
+
+// Similar listings — same category, excluding the current item
+const { data: similarData } = await useAsyncData(
+  `similar-${route.params.slug}`,
+  async () => {
+    if (!listingItem.value) return []
+    const rows = await fetchItems({ category: listingItem.value.category })
+    return rows.filter(row => row.id !== listingItem.value!.id)
+  }
+)
+const {
+  items: similarItems,
+  likedIds: similarLikedIds,
+  toggle: toggleSimilar
+} = useItemFeed(similarData.value ?? [], () => Promise.resolve([]), PAGE_SIZE)
 
 const breadcrumb = ref<Array<BreadcrumbItem>>([
   { label: 'Home' },
@@ -178,11 +227,14 @@ useSeoMeta({
             }"
           />
           <UButton
-            :label="`${0} Likes`"
+            :label="`${likeCount} Likes`"
             icon="i-lucide-heart"
             :ui="{
-              base: 'bg-white text-black dark:bg-gray-800 dark:text-white'
+              base: liked
+                ? 'bg-primary text-white'
+                : 'bg-white text-black dark:bg-gray-800 dark:text-white'
             }"
+            @click="toggleProductLike"
           />
         </div>
         <div class="absolute bottom-2 right-2 z-10 flex gap-2">
@@ -725,7 +777,11 @@ useSeoMeta({
           <h1>Similar Listings</h1>
         </USeparator>
       </div>
-      <ItemCard />
+      <ItemGrid
+        :items="similarItems"
+        :liked-ids="similarLikedIds"
+        @toggle="toggleSimilar"
+      />
     </div>
   </div>
 </template>

@@ -792,16 +792,24 @@ export const NON_BUY_CATEGORIES = new Set<string>([
   'looking-for'
 ])
 
-// Maps every category slug (at any depth) to its top-level root slug.
+// Index every category slug (at any depth): rootBySlug -> its top-level root
+// slug, labelBySlug -> its own display label.
 const rootBySlug = new Map<string, string>()
+const labelBySlug = new Map<string, string>()
 function indexRoots(nodes: SellCategory[], root: string) {
   for (const node of nodes) {
     rootBySlug.set(node.value, root)
+    labelBySlug.set(node.value, node.label)
     if (node.children?.length) indexRoots(node.children, root)
   }
 }
 for (const top of SELL_CATEGORIES) {
   indexRoots([top], top.value)
+}
+
+// Display label for any category slug, e.g. 'earphones' -> 'Earphones'.
+export function categoryLabel(slug: string): string {
+  return labelBySlug.get(slug) ?? slug
 }
 
 // True when the selected category supports in-app checkout ("buy").

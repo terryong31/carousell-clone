@@ -87,6 +87,7 @@ export type Database = {
           meetup_lng: number | null
           meetup_location: string | null
           price: number
+          search_vector: unknown
           seller_id: string
           size: string | null
           slug: string
@@ -112,6 +113,7 @@ export type Database = {
           meetup_lng?: number | null
           meetup_location?: string | null
           price: number
+          search_vector?: unknown
           seller_id: string
           size?: string | null
           slug?: string
@@ -137,6 +139,7 @@ export type Database = {
           meetup_lng?: number | null
           meetup_location?: string | null
           price?: number
+          search_vector?: unknown
           seller_id?: string
           size?: string | null
           slug?: string
@@ -155,6 +158,39 @@ export type Database = {
           {
             foreignKeyName: "items_seller_id_fkey"
             columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          created_at: string | null
+          item_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          item_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          item_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "likes_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
