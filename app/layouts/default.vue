@@ -247,6 +247,7 @@ const footerInfoUrls = [
               <UButton
                 loading-auto
                 loading-icon="i-lucide-loader"
+                color="secondary"
                 class="font-bold text-white rounded-full md:rounded-md text-lg py-2.5 px-4 md:px-2.5 md:py-1.5 md:text-sm"
                 @click="sellItem"
               >

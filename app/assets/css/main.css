@@ -5,6 +5,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Pin the primary token to green-600 (Nuxt UI defaults to 500 light / 400 dark) */
+:root {
+  --ui-primary: var(--ui-color-primary-600);
+}
+
+.dark {
+  --ui-primary: var(--ui-color-primary-600);
+}
+
 @layer base {
   h1 {
     @apply text-2xl font-bold;
