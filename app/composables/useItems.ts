@@ -1,4 +1,10 @@
 import type { TablesInsert } from '~/types/database.types'
+import type { FeedItem } from '~/types/feed'
+
+// Disambiguate the seller embed via the FK name — items links to profiles both
+// directly (seller_id) and indirectly (through likes).
+const FEED_SELECT = '*, seller:profiles!items_seller_id_fkey(username, display_name, avatar_url), likes(count)'
+const PAGE_SIZE = 12
 
 type CreateItemPayload = Omit<
   TablesInsert<'items'>,
@@ -12,9 +18,9 @@ export const useItems = () => {
     useAsyncData(`item-${slug}`, async () => {
       const { data, error } = await supabase
         .from('items')
-        .select('*')
+        .select(FEED_SELECT)
         .eq('slug', slug)
-        .single()
+        .single<FeedItem>()
       if (error) throw createError({ statusCode: 404, message: 'Item not found' })
       return data
     })
@@ -23,13 +29,33 @@ export const useItems = () => {
     useAsyncData(`seller-items-${sellerId}`, async () => {
       const { data, error } = await supabase
         .from('items')
-        .select('*')
+        .select(FEED_SELECT)
         .eq('seller_id', sellerId)
         .eq('status', 'active')
         .order('created_at', { ascending: false })
+        .returns<FeedItem[]>()
       if (error) throw error
       return data ?? []
     })
+
+  // Initial home-feed page; runs server-side so the page is ISR-cacheable.
+  const fetchFeed = () =>
+    useAsyncData('home-feed', () => fetchItems())
+
+  // Plain fetch used for client-side pagination and category browsing.
+  const fetchItems = async (opts: { offset?: number, category?: string } = {}) => {
+    const offset = opts.offset ?? 0
+    let query = supabase
+      .from('items')
+      .select(FEED_SELECT)
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + PAGE_SIZE - 1)
+    if (opts.category) query = query.eq('category', opts.category)
+    const { data, error } = await query.returns<FeedItem[]>()
+    if (error) throw error
+    return data ?? []
+  }
 
   const createItem = async (payload: CreateItemPayload) => {
     const user = useSupabaseUser()
@@ -51,5 +77,5 @@ export const useItems = () => {
       .single()
   }
 
-  return { fetchItem, fetchSellerItems, createItem }
+  return { fetchItem, fetchSellerItems, fetchFeed, fetchItems, createItem, PAGE_SIZE }
 }
