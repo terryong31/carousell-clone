@@ -1,6 +1,6 @@
-// Proxies place search to Nominatim (OpenStreetMap).
-// Server-side so we can set a compliant User-Agent (required by the OSM usage
-// policy) and keep the browser free of CORS concerns.
+// ADR-0002 trigger #2 (third-party call): proxies place search to Nominatim
+// (OpenStreetMap) so we can set a compliant User-Agent — required by the OSM
+// usage policy — and keep the browser free of CORS concerns.
 
 interface NominatimResult {
   place_id: number
