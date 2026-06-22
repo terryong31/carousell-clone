@@ -4,7 +4,8 @@ import type { FeedItem } from '~/types/feed'
 
 const PAGE_SIZE = 12
 
-// Full-text + filtered search over active listings.
+// ADR-0002 trigger #4 (query tuning): full-text + filtered search over active
+// listings, keeping the tsquery config server-side behind a stable contract.
 // Query params: q (text), category, condition, offset.
 export default defineEventHandler(async (event): Promise<FeedItem[]> => {
   const { q, category, condition, offset } = getQuery(event)

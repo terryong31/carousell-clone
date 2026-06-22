@@ -2,6 +2,16 @@
 
 This directory houses the Nitro backend APIs, server routes, and middleware.
 
+> [!IMPORTANT]
+> **When does a `server/api` route belong here at all?** See
+> [ADR-0002](../docs/adr/0002-data-access-boundary-client-rls-vs-server-api.md).
+> Default to client-side Supabase + RLS for normal CRUD. Add a route **only** for:
+> (1) privileged/admin ops that bypass RLS, (2) secrets / third-party calls,
+> (3) non-bypassable or multi-table logic, (4) query tuning / hiding shape,
+> (5) server-only data. Every route file MUST open with a comment naming its
+> trigger (e.g. `// ADR-0002 trigger #2 (third-party call): …`). Never proxy file
+> uploads through a route.
+
 ## API & Server Route Development
 
 1. **Nitro Event Handlers**:
