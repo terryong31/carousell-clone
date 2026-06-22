@@ -631,6 +631,7 @@ useSeoMeta({
               <div>
                 <UButton
                   label="Buy"
+                  color="secondary"
                   class="w-full h-9 justify-center text-white font-bold"
                 />
               </div>
