@@ -10,7 +10,7 @@ export default defineEventHandler(async (event): Promise<FeedItem[]> => {
   const { q, category, condition, offset } = getQuery(event)
   const client = await serverSupabaseClient<Database>(event)
 
-  const start = Number(offset ?? 0)
+  const start = Math.max(0, Number.parseInt(String(offset ?? '0'), 10) || 0)
   let query = client
     .from('items')
     .select('*, seller:profiles!items_seller_id_fkey(username, display_name, avatar_url), likes(count)')

@@ -8,7 +8,10 @@ create table public.likes (
 
 create index on public.likes (item_id);
 
--- RLS (rls_auto_enable() event trigger enables RLS on table creation)
+-- Enable RLS explicitly so the migration is self-contained (the rls_auto_enable()
+-- event trigger also covers this, but isn't part of the tracked migrations).
+alter table public.likes enable row level security;
+
 -- public read so anyone can see like counts; users manage only their own likes
 create policy "likes_select_public"
   on public.likes for select

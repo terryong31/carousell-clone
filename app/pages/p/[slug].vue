@@ -18,11 +18,15 @@ const { toggleLike, fetchLikedIds } = useLikes()
 const likeCount = ref(listingItem.value?.likes[0]?.count ?? 0)
 const liked = ref(false)
 
-onMounted(async () => {
-  if (!listingItem.value) return
+// Resolve liked state on the client, and re-resolve when the user logs in/out
+watch(() => user.value?.id, async (id) => {
+  if (!id || !listingItem.value) {
+    liked.value = false
+    return
+  }
   const ids = await fetchLikedIds([listingItem.value.id])
   liked.value = ids.has(listingItem.value.id)
-})
+}, { immediate: true })
 
 async function toggleProductLike() {
   if (!user.value) {

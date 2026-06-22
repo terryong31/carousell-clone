@@ -22,8 +22,13 @@ export const useItemFeed = (
   }
 
   // Likes are user-specific, so they're resolved on the client (the SSR/ISR
-  // payload is shared across users and must stay like-agnostic).
+  // payload is shared across users and must stay like-agnostic). Re-sync when
+  // the auth user changes so a login/logout doesn't leave stale liked state.
   onMounted(() => syncLikes(items.value))
+  watch(() => user.value?.id, async (id) => {
+    likedIds.value = new Set()
+    if (id) await syncLikes(items.value)
+  })
 
   const loadMore = async () => {
     if (pending.value || !hasMore.value) return

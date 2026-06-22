@@ -792,7 +792,8 @@ export const NON_BUY_CATEGORIES = new Set<string>([
   'looking-for'
 ])
 
-// Maps every category slug (at any depth) to its top-level root slug + label.
+// Index every category slug (at any depth): rootBySlug -> its top-level root
+// slug, labelBySlug -> its own display label.
 const rootBySlug = new Map<string, string>()
 const labelBySlug = new Map<string, string>()
 function indexRoots(nodes: SellCategory[], root: string) {
