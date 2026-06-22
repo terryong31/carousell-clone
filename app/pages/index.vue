@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { categories } from '~/constants/categories'
+import { categories } from '~/constants/header-categories'
 
 definePageMeta({
   showSearch: true,

@@ -39,6 +39,128 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          label: string
+          parent_slug: string | null
+          slug: string
+          sort_order: number | null
+        }
+        Insert: {
+          label: string
+          parent_slug?: string | null
+          slug: string
+          sort_order?: number | null
+        }
+        Update: {
+          label?: string
+          parent_slug?: string | null
+          slug?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_slug_fkey"
+            columns: ["parent_slug"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      items: {
+        Row: {
+          accept_offer: boolean | null
+          brand: string | null
+          buyer_protection: boolean | null
+          category: string
+          condition: string | null
+          created_at: string | null
+          deal_east_malaysia: boolean | null
+          deal_meetup: boolean | null
+          deal_west_malaysia: boolean | null
+          description: string | null
+          free_shipping: boolean | null
+          id: string
+          images: string[]
+          meetup_lat: number | null
+          meetup_lng: number | null
+          meetup_location: string | null
+          price: number
+          seller_id: string
+          size: string | null
+          slug: string
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          accept_offer?: boolean | null
+          brand?: string | null
+          buyer_protection?: boolean | null
+          category: string
+          condition?: string | null
+          created_at?: string | null
+          deal_east_malaysia?: boolean | null
+          deal_meetup?: boolean | null
+          deal_west_malaysia?: boolean | null
+          description?: string | null
+          free_shipping?: boolean | null
+          id?: string
+          images?: string[]
+          meetup_lat?: number | null
+          meetup_lng?: number | null
+          meetup_location?: string | null
+          price: number
+          seller_id: string
+          size?: string | null
+          slug?: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          accept_offer?: boolean | null
+          brand?: string | null
+          buyer_protection?: boolean | null
+          category?: string
+          condition?: string | null
+          created_at?: string | null
+          deal_east_malaysia?: boolean | null
+          deal_meetup?: boolean | null
+          deal_west_malaysia?: boolean | null
+          description?: string | null
+          free_shipping?: boolean | null
+          id?: string
+          images?: string[]
+          meetup_lat?: number | null
+          meetup_lng?: number | null
+          meetup_location?: string | null
+          price?: number
+          seller_id?: string
+          size?: string | null
+          slug?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "items_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["slug"]
+          },
+          {
+            foreignKeyName: "items_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
