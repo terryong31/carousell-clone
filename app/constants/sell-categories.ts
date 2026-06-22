@@ -782,3 +782,40 @@ export const SELL_CATEGORIES: SellCategory[] = [
     ]
   }
 ]
+
+// Top-level categories that are deal-only (no in-app checkout / "buy").
+// Everything else is buy-enabled.
+export const NON_BUY_CATEGORIES = new Set<string>([
+  'announcements',
+  'auto-accessories',
+  'community',
+  'looking-for'
+])
+
+// Maps every category slug (at any depth) to its top-level root slug.
+const rootBySlug = new Map<string, string>()
+function indexRoots(nodes: SellCategory[], root: string) {
+  for (const node of nodes) {
+    rootBySlug.set(node.value, root)
+    if (node.children?.length) indexRoots(node.children, root)
+  }
+}
+for (const top of SELL_CATEGORIES) {
+  indexRoots([top], top.value)
+}
+
+// True when the selected category supports in-app checkout ("buy").
+export function isBuyCategory(slug: string): boolean {
+  const root = rootBySlug.get(slug)
+  return root ? !NON_BUY_CATEGORIES.has(root) : true
+}
+
+const topLevelLabel = new Map<string, string>(
+  SELL_CATEGORIES.map(top => [top.value, top.label])
+)
+
+// Label of the selected category's top-level root, e.g. "Computers & Tech".
+export function categoryRootLabel(slug: string): string {
+  const root = rootBySlug.get(slug)
+  return root ? topLevelLabel.get(root) ?? '' : ''
+}

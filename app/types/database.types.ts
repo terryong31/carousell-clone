@@ -83,6 +83,9 @@ export type Database = {
           free_shipping: boolean | null
           id: string
           images: string[]
+          meetup_lat: number | null
+          meetup_lng: number | null
+          meetup_location: string | null
           price: number
           seller_id: string
           size: string | null
@@ -105,6 +108,9 @@ export type Database = {
           free_shipping?: boolean | null
           id?: string
           images?: string[]
+          meetup_lat?: number | null
+          meetup_lng?: number | null
+          meetup_location?: string | null
           price: number
           seller_id: string
           size?: string | null
@@ -127,6 +133,9 @@ export type Database = {
           free_shipping?: boolean | null
           id?: string
           images?: string[]
+          meetup_lat?: number | null
+          meetup_lng?: number | null
+          meetup_location?: string | null
           price?: number
           seller_id?: string
           size?: string | null
@@ -136,6 +145,13 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "items_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["slug"]
+          },
           {
             foreignKeyName: "items_seller_id_fkey"
             columns: ["seller_id"]
